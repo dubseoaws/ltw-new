@@ -26,8 +26,13 @@ function unauthorized() {
 }
 
 export function proxy(request: NextRequest) {
-  // No credentials configured means the site stays open (e.g. production launch).
-  if (!USERNAME || !PASSWORD) return NextResponse.next();
+  // Fail closed: without credentials configured nobody gets in.
+  if (!USERNAME || !PASSWORD) {
+    return new NextResponse("Site is locked: set username and password in .env", {
+      status: 503,
+      headers: { "Cache-Control": "no-store" },
+    });
+  }
 
   const header = request.headers.get("authorization");
   if (!header?.startsWith("Basic ")) return unauthorized();
@@ -54,5 +59,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/(.*)"],
 };

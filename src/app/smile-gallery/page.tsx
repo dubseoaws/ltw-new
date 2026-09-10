@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import BeforeAfterSlider from "@/components/before-after-slider";
-import { CtaBand, FeatureGrid, PageHero } from "@/components/blocks";
+import { CtaBand, FaqSection, FeatureGrid, GoogleReviews, PageHero } from "@/components/blocks";
 import { Section, SectionHeading, TickList } from "@/components/ui";
 import { gallery, galleryCases, galleryMore, heroBeforeAfter } from "@/lib/site";
 
@@ -202,6 +202,10 @@ export default function GalleryPage() {
           </div>
         </div>
       </Section>
+
+      <GoogleReviews className="bg-white" />
+
+      <FaqSection className="bg-slate-50 border-y border-slate-200" />
 
       <CtaBand
         heading={gallery.ctaHeading}

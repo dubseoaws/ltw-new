@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import Accordion from "@/components/accordion";
 import Button from "@/components/button";
-import { CtaBand, FeatureGrid, PageHero, PricePanel } from "@/components/blocks";
+import {
+  CtaBand,
+  FeatureGrid,
+  GoogleReviews,
+  PageHero,
+  PricePanel,
+  SmileGalleryStrip,
+} from "@/components/blocks";
 import { Check, Section, SectionHeading } from "@/components/ui";
 import { bookUrl, pricing } from "@/lib/site";
 
@@ -241,6 +248,10 @@ export default function PricingPage() {
           ))}
         </div>
       </Section>
+
+      <SmileGalleryStrip />
+
+      <GoogleReviews className="bg-white" />
 
       <CtaBand heading={pricing.ctaHeading} sub={pricing.ctaSub} note={pricing.ctaNote} />
     </>

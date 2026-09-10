@@ -97,7 +97,7 @@ export const bookingClinics: BookingClinic[] = [
 ];
 
 export const bookingCopy = {
-  steps: ["Service", "Clinic", "Date", "Time", "Details"],
+  steps: ["Clinic", "Date", "Time", "Details"],
   rating: "4.9",
   reviews: "300+ verified patient reviews",
   regulated: "CQC Registered",

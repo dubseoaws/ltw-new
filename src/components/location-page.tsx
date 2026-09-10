@@ -5,6 +5,7 @@ import Button from "@/components/button";
 import {
   AreasGrid,
   CtaBand,
+  GoogleReviews,
   HoursCard,
   PageHero,
   PricePanel,
@@ -322,12 +323,9 @@ export default function LocationPage({
             Get Directions →
           </Button>
         </div>
-
-        <div className="mx-auto mt-10 max-w-xl rounded-lg border border-slate-200 bg-slate-50 p-6 text-center shadow-2xs">
-          <h3 className="text-lg font-bold text-slate-900">{c.reviewsHeading}</h3>
-          <p className="mt-2 text-sm text-slate-600 font-normal">{c.reviewsSub}</p>
-        </div>
       </Section>
+
+      <GoogleReviews className="bg-white border-t border-slate-200" />
 
       {/* ---------------------------------------------------------- FAQS */}
       <Section className="bg-slate-50 border-t border-slate-200">

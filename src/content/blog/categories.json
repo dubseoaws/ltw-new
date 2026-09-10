@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "teeth-whitening",
+    "name": "Teeth Whitening",
+    "count": 646
+  },
+  {
+    "slug": "veneers",
+    "name": "Veneers",
+    "count": 1
+  },
+  {
+    "slug": "invisible-braces",
+    "name": "Invisible Braces",
+    "count": 1
+  },
+  {
+    "slug": "dental-implants",
+    "name": "Dental Implants",
+    "count": 1
+  },
+  {
+    "slug": "cosmetic-dentistry",
+    "name": "Cosmetic Dentistry",
+    "count": 2
+  },
+  {
+    "slug": "dental-hygiene",
+    "name": "Dental Hygiene",
+    "count": 8
+  }
+]

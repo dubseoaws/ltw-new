@@ -1,7 +1,19 @@
 import Image from "next/image";
+import Accordion from "./accordion";
+import BeforeAfterSlider from "./before-after-slider";
 import Button from "./button";
+import GoogleReviewsCarousel from "./google-reviews-carousel";
 import { Check, Eyebrow, Section, SectionHeading, TickList } from "./ui";
-import { bookUrl, site } from "@/lib/site";
+import { googleRating, googleReviews } from "@/lib/reviews";
+import {
+  bookUrl,
+  clinics,
+  faqPage,
+  heroStats,
+  homeResults,
+  reviewsBlock,
+  site,
+} from "@/lib/site";
 
 /* --------------------------------------------------------------- page hero */
 
@@ -349,6 +361,178 @@ export function CtaBand({
         {note ? <p className="mt-4 text-xs text-slate-400 font-medium">{note}</p> : null}
       </div>
     </section>
+  );
+}
+
+/* -------------------------------------------------------- google reviews */
+
+export function GoogleReviews({ className = "bg-white" }: { className?: string }) {
+  const hasReviews = googleReviews.length > 0;
+
+  return (
+    <Section className={className} id="reviews">
+      <h2 className="text-center font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-[2.25rem]">
+        {googleRating.heading}
+      </h2>
+
+      <div className="mt-8 flex flex-col items-center justify-between gap-5 sm:flex-row">
+        <div className="flex items-center gap-3">
+          <span className="font-display text-5xl font-bold leading-none tracking-tight text-slate-900">
+            {googleRating.score}
+          </span>
+          <span className="flex flex-col gap-1">
+            <span className="flex gap-0.5 text-amber-400" aria-hidden="true">
+              {Array.from({ length: 5 }, (_, i) => (
+                <svg key={i} viewBox="0 0 24 24" className="h-5 w-5 fill-current">
+                  <path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 17.1 6.1 20.2l1.2-6.6L2.5 9l6.6-.9L12 2z" />
+                </svg>
+              ))}
+            </span>
+            <span className="text-sm text-slate-600">
+              {googleRating.count} reviews on <span className="font-semibold text-slate-800">Google</span>
+            </span>
+          </span>
+        </div>
+
+        <a
+          href={googleRating.reviewUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full bg-blue-600 px-7 py-3.5 text-sm font-bold text-white shadow-2xs transition hover:bg-blue-700"
+        >
+          {googleRating.buttonLabel}
+        </a>
+      </div>
+
+      <GoogleReviewsCarousel />
+
+      {hasReviews ? null : (
+        <>
+          <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:grid-cols-4">
+            {heroStats.map((s) => (
+              <div key={s.label} className="text-center">
+                <dt className="font-display text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+                  {s.value}
+                </dt>
+                <dd className="mt-0.5 text-[0.68rem] font-bold uppercase tracking-wider text-slate-500">
+                  {s.label}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <p className="mt-8 text-center text-sm font-medium text-slate-600">{reviewsBlock.cta}</p>
+
+          <div className="mt-5 flex flex-wrap justify-center gap-3">
+            <Button href={bookUrl} tone="emerald" size="md">
+              {reviewsBlock.ctaLabel}
+            </Button>
+            <Button href={clinics.southKensington.mapUrl} tone="outline" size="md">
+              {reviewsBlock.linkLabel}
+            </Button>
+          </div>
+        </>
+      )}
+    </Section>
+  );
+}
+
+/* --------------------------------------------------------- smile gallery */
+
+export function SmileGalleryStrip({
+  className = "bg-slate-50 border-y border-slate-200",
+}: {
+  className?: string;
+}) {
+  return (
+    <Section className={className}>
+      <SectionHeading
+        eyebrow={faqPage.transformationsEyebrow}
+        title={faqPage.transformationsHeading}
+        sub={faqPage.transformationsSub}
+      />
+
+      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {homeResults.map((r) => (
+          <figure
+            key={r.before}
+            className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xs transition hover:border-slate-300 hover:shadow-md"
+          >
+            <BeforeAfterSlider
+              {...r}
+              compact
+              className="rounded-none border-0 shadow-none"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            />
+            <figcaption className="flex flex-1 flex-col gap-2 p-4">
+              <span className="text-sm font-bold leading-snug text-slate-900">{r.title}</span>
+              <span className="mt-auto flex items-center justify-between gap-2">
+                <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-semibold text-slate-700">
+                  {r.meta}
+                </span>
+                <span className="text-xs font-medium text-slate-500">Drag to compare</span>
+              </span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <p className="mx-auto mt-6 max-w-2xl text-center text-xs font-normal text-slate-500">
+        {faqPage.transformationsNote}
+      </p>
+
+      <div className="mt-6 flex justify-center">
+        <Button href="/smile-gallery" tone="slate" size="md">
+          View Smile Gallery
+        </Button>
+      </div>
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------------ faqs */
+
+export function FaqSection({
+  items = faqPage.items,
+  heading = faqPage.heading,
+  sub = faqPage.sub,
+  className = "bg-white",
+  showLink = true,
+}: {
+  items?: readonly { q: string; a: string }[];
+  heading?: string;
+  sub?: string;
+  className?: string;
+  showLink?: boolean;
+}) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
+  return (
+    <Section className={className} id="faqs">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      <SectionHeading eyebrow="FAQs" title={heading} sub={sub} />
+      <div className="mx-auto mt-8 max-w-3xl">
+        <Accordion items={items} />
+      </div>
+      {showLink ? (
+        <div className="mt-6 flex justify-center">
+          <Button href="/faqs" tone="outline" size="md">
+            See all FAQs
+          </Button>
+        </div>
+      ) : null}
+    </Section>
   );
 }
 

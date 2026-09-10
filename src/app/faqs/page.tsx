@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Accordion from "@/components/accordion";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import Button from "@/components/button";
-import { CtaBand, HoursCard, PageHero } from "@/components/blocks";
+import { CtaBand, GoogleReviews, HoursCard, PageHero } from "@/components/blocks";
 import { Section, SectionHeading } from "@/components/ui";
 import { clinics, faqPage, home, homeResults, site } from "@/lib/site";
 
@@ -107,6 +107,8 @@ export default function FaqsPage() {
           </Button>
         </div>
       </Section>
+
+      <GoogleReviews className="bg-slate-50 border-y border-slate-200" />
 
       <CtaBand
         heading="Still Have Questions?"

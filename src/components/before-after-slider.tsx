@@ -59,14 +59,32 @@ export default function BeforeAfterSlider({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const step = e.shiftKey ? 10 : 2;
+    if (e.key === "ArrowLeft") setPos((p) => Math.max(0, p - step));
+    else if (e.key === "ArrowRight") setPos((p) => Math.min(100, p + step));
+    else if (e.key === "Home") setPos(0);
+    else if (e.key === "End") setPos(100);
+    else return;
+    e.preventDefault();
+  };
+
   return (
     <div
       ref={ref}
-      className={`group relative ${aspect} w-full touch-none overflow-hidden bg-slate-950 select-none border border-slate-200 shadow-2xs cursor-ew-resize ${className}`}
+      role="slider"
+      tabIndex={0}
+      aria-label="Before and after comparison. Use the arrow keys to reveal more of each photo."
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(pos)}
+      aria-valuetext={`${Math.round(pos)}% before, ${100 - Math.round(pos)}% after`}
+      className={`group relative ${aspect} w-full touch-none overflow-hidden bg-slate-950 select-none border border-slate-200 shadow-2xs cursor-ew-resize focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 ${className}`}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
+      onKeyDown={handleKeyDown}
     >
       {/* After image (background) */}
       <Image

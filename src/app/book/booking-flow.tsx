@@ -10,7 +10,6 @@ import {
   bookingServices,
   formatLongDate,
   type BookingClinic,
-  type BookingService,
 } from "@/lib/booking";
 import { site } from "@/lib/site";
 
@@ -18,6 +17,10 @@ const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 const CURRENT_YEAR = new Date().getFullYear();
 const YEARS = Array.from({ length: 100 }, (_, i) => String(CURRENT_YEAR - i));
 const DAYS = Array.from({ length: 31 }, (_, i) => String(i + 1));
+
+/** The flow now starts at clinic selection, so every booking is the whitening package. */
+const SERVICE =
+  bookingServices.find((s) => s.id === "home-teeth-whitening") ?? bookingServices[0];
 
 function StepDots({ step }: { step: number }) {
   return (
@@ -67,7 +70,6 @@ function StepHeader({ step, title, children }: { step: number; title: string; ch
 
 export default function BookingFlow({ initialClinicId }: { initialClinicId?: string }) {
   const [step, setStep] = useState(1);
-  const [service, setService] = useState<BookingService | null>(null);
   const [clinic, setClinic] = useState<BookingClinic | null>(
     bookingClinics.find((c) => c.id === initialClinicId) ?? null,
   );
@@ -113,7 +115,7 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!service || !clinic || !detailsValid || status === "sending") return;
+    if (!clinic || !detailsValid || status === "sending") return;
 
     setStatus("sending");
     setError("");
@@ -124,7 +126,7 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          serviceId: service.id,
+          serviceId: SERVICE.id,
           clinicId: clinic.id,
           date,
           time,
@@ -143,7 +145,7 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
   }
 
   /* -------------------------------------------------------- confirmation */
-  if (status === "done" && service && clinic) {
+  if (status === "done" && clinic) {
     return (
       <div className="rounded-xl border border-slate-200 bg-white p-6 text-center shadow-sm sm:p-10">
         <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-2xl text-emerald-700 border border-emerald-200">
@@ -164,11 +166,11 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
         ) : null}
 
         <dl className="mx-auto mt-6 max-w-sm divide-y divide-slate-100 rounded-lg border border-slate-200 text-left">
-          <Summary label="Service" value={service.name} />
+          <Summary label="Service" value={SERVICE.name} />
           <Summary label="Clinic" value={clinic.name} sub={clinic.address} />
           <Summary label="Date" value={formatLongDate(date)} />
           <Summary label="Time" value={time} />
-          <Summary label="Price" value={service.price} sub="Pay at clinic" />
+          <Summary label="Price" value={SERVICE.price} sub="Pay at clinic" />
         </dl>
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -204,53 +206,10 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
       ) : null}
 
       <div className="mt-5 rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
-        {/* ---------------------------------------------------- 1 service */}
+        {/* ----------------------------------------------------- 1 clinic */}
         {step === 1 ? (
           <>
-            <StepHeader step={1} title={bookingCopy.serviceHeading}>
-              {bookingCopy.serviceSub}
-            </StepHeader>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {bookingServices.map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => {
-                    setService(s);
-                    setStep(2);
-                  }}
-                  className="group flex items-center gap-4 rounded-lg border border-slate-200 bg-white p-4 text-left transition hover:border-emerald-600 hover:bg-emerald-50/40"
-                >
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-bold text-slate-900">{s.name}</span>
-                    <span className="mt-0.5 block text-xs leading-relaxed text-slate-600">
-                      {s.blurb}
-                    </span>
-                  </span>
-                  <span className="shrink-0 text-right">
-                    {s.badge ? (
-                      <span className="block text-[0.6rem] font-bold uppercase tracking-wider text-emerald-700">
-                        {s.badge}
-                      </span>
-                    ) : null}
-                    <span className="block text-base font-bold text-slate-900">{s.price}</span>
-                  </span>
-                  <span className="shrink-0 text-slate-300 transition group-hover:text-emerald-600">
-                    →
-                  </span>
-                </button>
-              ))}
-            </div>
-            <p className="mt-5 text-center text-xs font-medium text-slate-500">
-              {bookingCopy.serviceNote}
-            </p>
-          </>
-        ) : null}
-
-        {/* ----------------------------------------------------- 2 clinic */}
-        {step === 2 ? (
-          <>
-            <StepHeader step={2} title={bookingCopy.clinicHeading}>
+            <StepHeader step={1} title={bookingCopy.clinicHeading}>
               {bookingCopy.clinicSub}
             </StepHeader>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -264,7 +223,7 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
                       setClinic(c);
                       setDate("");
                       setTime("");
-                      setStep(3);
+                      setStep(2);
                     }}
                     className="group flex flex-col rounded-lg border border-slate-200 bg-white p-5 text-left transition hover:border-emerald-600 hover:bg-emerald-50/40"
                   >
@@ -296,13 +255,13 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
           </>
         ) : null}
 
-        {/* ------------------------------------------------------- 3 date */}
-        {step === 3 && clinic && service ? (
+        {/* ------------------------------------------------------- 2 date */}
+        {step === 2 && clinic ? (
           <>
-            <StepHeader step={3} title={bookingCopy.dateHeading}>
+            <StepHeader step={2} title={bookingCopy.dateHeading}>
               <>
                 Select your preferred appointment date for{" "}
-                <strong className="text-slate-800">{service.name}</strong> at{" "}
+                <strong className="text-slate-800">{SERVICE.name}</strong> at{" "}
                 <strong className="text-slate-800">{clinic.area}</strong>
               </>
             </StepHeader>
@@ -317,7 +276,7 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
                   onClick={() => {
                     setDate(d.iso);
                     setTime("");
-                    setStep(4);
+                    setStep(3);
                   }}
                   className="rounded-lg border border-slate-200 bg-white px-2 py-3 text-center transition hover:border-emerald-600 hover:bg-emerald-50/40"
                 >
@@ -339,10 +298,10 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
           </>
         ) : null}
 
-        {/* ------------------------------------------------------- 4 time */}
-        {step === 4 && date ? (
+        {/* ------------------------------------------------------- 3 time */}
+        {step === 3 && date ? (
           <>
-            <StepHeader step={4} title={bookingCopy.timeHeading}>
+            <StepHeader step={3} title={bookingCopy.timeHeading}>
               <>
                 Select your preferred time on{" "}
                 <strong className="text-slate-800">{formatLongDate(date)}</strong>
@@ -355,7 +314,7 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
                   type="button"
                   onClick={() => {
                     setTime(t);
-                    setStep(5);
+                    setStep(4);
                   }}
                   className="rounded-lg border border-slate-200 bg-white py-2.5 text-sm font-bold text-slate-800 transition hover:border-emerald-600 hover:bg-emerald-50/40"
                 >
@@ -366,10 +325,10 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
           </>
         ) : null}
 
-        {/* ---------------------------------------------------- 5 details */}
-        {step === 5 && service && clinic ? (
+        {/* ---------------------------------------------------- 4 details */}
+        {step === 4 && clinic ? (
           <>
-            <StepHeader step={5} title={bookingCopy.detailsHeading}>
+            <StepHeader step={4} title={bookingCopy.detailsHeading}>
               {bookingCopy.detailsSub}
             </StepHeader>
 
@@ -381,11 +340,11 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
             </div>
 
             <dl className="mt-5 divide-y divide-slate-100 rounded-lg border border-slate-200">
-              <Summary label="Service" value={service.name} />
+              <Summary label="Service" value={SERVICE.name} />
               <Summary label="Clinic" value={clinic.name} sub={clinic.address} />
               <Summary label="Date" value={formatLongDate(date)} />
               <Summary label="Time" value={time} />
-              <Summary label="Price" value={service.price} sub="Pay at clinic" />
+              <Summary label="Price" value={SERVICE.price} sub="Pay at clinic" />
             </dl>
 
             <form onSubmit={submit} className="mt-6 grid gap-4" noValidate>

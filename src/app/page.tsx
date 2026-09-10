@@ -3,7 +3,7 @@ import Link from "next/link";
 import Accordion from "@/components/accordion";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import Button from "@/components/button";
-import { CtaBand, FeatureGrid, TeamStrip } from "@/components/blocks";
+import { CtaBand, FeatureGrid, GoogleReviews, TeamStrip } from "@/components/blocks";
 import { Check, Eyebrow, Section, SectionHeading, TickList } from "@/components/ui";
 import {
   blogPosts,
@@ -439,6 +439,8 @@ export default function HomePage() {
           <Accordion items={homeFaqs} />
         </div>
       </Section>
+
+      <GoogleReviews className="bg-white border-t border-slate-200" />
     </>
   );
 }

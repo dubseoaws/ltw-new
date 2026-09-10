@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Button from "@/components/button";
-import { CtaBand, FeatureGrid, PageHero } from "@/components/blocks";
+import {
+  CtaBand,
+  FaqSection,
+  FeatureGrid,
+  GoogleReviews,
+  PageHero,
+  SmileGalleryStrip,
+} from "@/components/blocks";
 import { Section, SectionHeading, TickList } from "@/components/ui";
 import { about, bookUrl, clinics, img, principal, site } from "@/lib/site";
 
@@ -206,6 +213,12 @@ export default function AboutPage() {
           </a>
         </div>
       </Section>
+
+      <GoogleReviews />
+
+      <SmileGalleryStrip />
+
+      <FaqSection />
 
       <CtaBand heading={about.ctaHeading} sub={about.ctaSub} note={about.ctaNote} />
     </>

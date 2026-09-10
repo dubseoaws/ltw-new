@@ -74,14 +74,35 @@ export const footerHours = [
 
 export const footerCityHours = ["Mon - Fri: 8am - 8pm", "Now Open — CQC Registered"];
 
+/** Header menu structure, mirroring the live site. */
 export const nav = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about-us" },
-  { label: "Our Dentists", href: "/dentists" },
-  { label: "Results Gallery", href: "/smile-gallery" },
-  { label: "Pricing", href: "/teeth-whitening-cost" },
-  { label: "FAQs", href: "/faqs" },
-];
+  {
+    label: "About",
+    items: [
+      { label: "About Us", href: "/about-us" },
+      { label: "Our Team", href: "/dentists" },
+      { label: "Contact Us", href: "/contact-us" },
+    ],
+  },
+  {
+    label: "Whitening",
+    items: [
+      { label: "Pricing", href: "/teeth-whitening-cost" },
+      { label: "Whitening Options", href: "/home-vs-laser-whitening" },
+      { label: "Sensitive Teeth", href: "/whitening-for-sensitive-teeth" },
+    ],
+  },
+  {
+    label: "Locations",
+    items: [
+      { label: "South Kensington", href: "/south-kensington" },
+      { label: "City of London", href: "/city-of-london" },
+    ],
+  },
+  { label: "Dental Hygiene", href: "/dental-hygiene" },
+  { label: "Results", href: "/smile-gallery" },
+  { label: "Book Appointment", href: "/book" },
+] as const;
 
 export const locationNav = [
   { label: "South Kensington", href: "/south-kensington" },
@@ -93,6 +114,7 @@ export const footerQuickLinks = [
   { label: "About Us", href: "/about-us" },
   { label: "Our Dentists", href: "/dentists" },
   { label: "Results Gallery", href: "/smile-gallery" },
+  { label: "Conditions", href: "/conditions" },
   { label: "Blog", href: "/blog" },
 ];
 
@@ -182,6 +204,18 @@ export const heroStats = [
   { value: "4.9★", label: "GOOGLE RATING" },
   { value: "300+", label: "GOOGLE REVIEWS" },
 ];
+
+/** Wording transcribed from the live reviews section on teethwhitening.london. */
+export const reviewsBlock = {
+  eyebrow: "GOOGLE REVIEWS",
+  heading: "What Our Patients Say",
+  sub: "Rated 4.9/5 from 300+ verified Google reviews.",
+  cta: "See why our patients rate us 4.9/5 on Google.",
+  ctaLabel: "Book Your Consultation →",
+  linkLabel: "Read our Google reviews →",
+  rating: "4.9",
+  ratingCount: "300+",
+};
 
 export const home = {
   eyebrow: "✓ GDC Registered · ⭐ 4.9/5 (300+)",

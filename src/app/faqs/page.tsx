@@ -13,8 +13,6 @@ export const metadata: Metadata = {
 };
 
 export default function FaqsPage() {
-  const sk = clinics.southKensington;
-
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -96,14 +94,19 @@ export default function FaqsPage() {
           title={faqPage.locationHeading}
           sub={faqPage.locationSub}
         />
-        <div className="mt-8 grid items-stretch gap-6 lg:grid-cols-2">
-          <HoursCard heading={`${sk.label} Opening Hours`} hours={sk.hours} note={sk.hoursNote} />
-          <ClinicMap clinic={sk} aspect="aspect-16/9" />
+        <div className="mt-8 grid items-start gap-10 lg:grid-cols-2">
+          {[clinics.southKensington, clinics.cityOfLondon].map((clinic) => (
+            <div key={clinic.label} className="grid gap-6">
+              <ClinicMap clinic={clinic} aspect="aspect-16/9" />
+              <HoursCard
+                heading={`${clinic.label} Opening Hours`}
+                hours={clinic.hours}
+                note={clinic.hoursNote}
+              />
+            </div>
+          ))}
         </div>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <Button href={sk.mapUrl} tone="outline" size="md">
-            Get Directions →
-          </Button>
           <Button href={site.phoneHref} tone="outline" size="md">
             {site.phone}
           </Button>

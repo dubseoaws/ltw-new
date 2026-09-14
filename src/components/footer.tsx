@@ -201,19 +201,19 @@ export default function Footer() {
             <p className="max-w-3xl leading-relaxed text-slate-500">{site.resultsDisclaimer}</p>
           </div>
           <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <a
+            <Link
               href="/terms"
               className="hover:text-emerald-400"
             >
               Terms &amp; Conditions
-            </a>
+            </Link>
             <span className="h-3 w-px bg-slate-800" />
-            <a
+            <Link
               href="/privacy"
               className="hover:text-emerald-400"
             >
               Privacy Policy
-            </a>
+            </Link>
             <span className="h-3 w-px bg-slate-800" />
             <span>
               Designed &amp; developed by{" "}

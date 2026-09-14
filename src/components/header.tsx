@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Logo from "./logo";
 import { bookUrl, nav, site } from "@/lib/site";
 
@@ -15,6 +15,32 @@ export default function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const desktopNav = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!open && !openMenu) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpenMenu(null);
+      if (open) {
+        setOpen(false);
+        menuButton.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [open, openMenu]);
+
+  useEffect(() => {
+    if (!openMenu) return;
+    const closeOnOutside = (event: PointerEvent) => {
+      if (!desktopNav.current?.contains(event.target as Node)) setOpenMenu(null);
+    };
+    document.addEventListener("pointerdown", closeOnOutside);
+    return () => document.removeEventListener("pointerdown", closeOnOutside);
+  }, [openMenu]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -27,6 +53,7 @@ export default function Header() {
   if (lastPath !== pathname) {
     setLastPath(pathname);
     setOpen(false);
+    setOpenMenu(null);
   }
 
   return (
@@ -69,34 +96,46 @@ export default function Header() {
             : "bg-white border-slate-100"
         }`}
       >
-        <div className="container-x flex h-16 items-center justify-between gap-6">
+        <div className="container-x flex h-20 items-center justify-between gap-4">
           <Logo compact={scrolled} />
 
-          <nav className="hidden items-center gap-1 xl:flex" aria-label="Primary">
+          <nav ref={desktopNav} className="hidden items-center gap-1 xl:flex" aria-label="Primary">
             {nav.map((item) =>
               "items" in item ? (
-                <div key={item.label} className="group relative">
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => setOpenMenu(item.label)}
+                  onMouseLeave={() => setOpenMenu((v) => (v === item.label ? null : v))}
+                >
                   <button
                     type="button"
-                    className={`flex items-center gap-1 rounded-lg px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors ${
-                      item.items.some((s) => s.href === pathname)
+                    onClick={() => setOpenMenu((v) => (v === item.label ? null : item.label))}
+                    className={`flex min-h-11 items-center gap-1 rounded-lg px-2.5 py-2 text-sm font-semibold whitespace-nowrap transition-colors ${
+                      item.items.some((s) => s.href === pathname) || openMenu === item.label
                         ? "text-slate-900 bg-slate-100"
-                        : "text-slate-600 group-hover:text-slate-900 group-hover:bg-slate-50"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                     }`}
                     aria-haspopup="true"
+                    aria-expanded={openMenu === item.label}
                   >
                     {item.label}
                     <svg viewBox="0 0 10 6" className="h-1.5 w-2.5 opacity-70" aria-hidden="true">
                       <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </button>
-                  <div className="invisible absolute left-0 top-full z-50 w-60 translate-y-2 pt-1 opacity-0 transition-all duration-150 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                  <div
+                    hidden={openMenu !== item.label}
+                    className="absolute left-0 top-full z-50 w-60 pt-1"
+                  >
                     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
                       {item.items.map((sub) => (
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className={`block rounded-lg px-3.5 py-2 text-xs font-semibold transition hover:bg-slate-50 ${
+                          aria-current={pathname === sub.href ? "page" : undefined}
+                          onClick={() => setOpenMenu(null)}
+                          className={`block min-h-11 rounded-lg px-3.5 py-3 text-sm font-semibold transition hover:bg-slate-50 ${
                             pathname === sub.href ? "text-slate-900 bg-slate-50" : "text-slate-700"
                           }`}
                         >
@@ -115,7 +154,8 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`rounded-lg px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors ${
+                  aria-current={pathname === item.href ? "page" : undefined}
+                  className={`flex min-h-11 items-center rounded-lg px-2.5 py-2 text-sm font-semibold whitespace-nowrap transition-colors ${
                     pathname === item.href
                       ? "text-slate-900 bg-slate-100"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
@@ -131,16 +171,18 @@ export default function Header() {
             <a
               href={bookUrl}
               rel="noopener"
-              className="hidden rounded-lg bg-emerald-600 px-4.5 py-2 text-xs font-semibold text-white shadow-2xs transition hover:bg-emerald-700 md:inline-flex"
+              className="hidden min-h-11 items-center rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white shadow-2xs transition hover:bg-emerald-800 md:inline-flex"
             >
               Book Consultation
             </a>
             <button
+              ref={menuButton}
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
+              aria-controls="mobile-navigation"
               aria-label="Toggle navigation menu"
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 xl:hidden"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 xl:hidden"
             >
               <span className="relative block h-3 w-4">
                 <span
@@ -165,7 +207,7 @@ export default function Header() {
 
         {/* Mobile Nav Menu */}
         {open ? (
-          <div className="border-t border-slate-200 bg-white px-4 py-4 xl:hidden">
+          <nav id="mobile-navigation" aria-label="Primary" className="max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain border-t border-slate-200 bg-white px-4 py-4 xl:hidden">
             <div className="grid gap-1">
               {nav.map((item) =>
                 "items" in item ? (
@@ -177,7 +219,9 @@ export default function Header() {
                       <Link
                         key={sub.href}
                         href={sub.href}
-                        className="rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
+                        aria-current={pathname === sub.href ? "page" : undefined}
+                        onClick={() => setOpen(false)}
+                        className="min-h-11 rounded-lg px-3 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-800"
                       >
                         {sub.label}
                       </Link>
@@ -187,7 +231,9 @@ export default function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
+                    aria-current={pathname === item.href ? "page" : undefined}
+                    onClick={() => setOpen(false)}
+                    className="min-h-11 rounded-lg px-3 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-800"
                   >
                     {item.label}
                   </Link>
@@ -209,7 +255,7 @@ export default function Header() {
                 </a>
               </div>
             </div>
-          </div>
+          </nav>
         ) : null}
       </header>
     </>

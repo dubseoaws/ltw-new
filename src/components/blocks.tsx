@@ -35,25 +35,21 @@ export function PageHero({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="bg-gradient-to-b from-[#F8FAFC] via-[#F1F5F9]/50 to-[#FFFFFF] border-b border-slate-200/80 relative overflow-hidden py-12 lg:py-16">
-      {/* Soft Ambient Light Glow */}
-      <div className="pointer-events-none absolute -top-40 right-0 h-[500px] w-[500px] rounded-full bg-emerald-500/5 blur-[120px]" />
-      <div className="pointer-events-none absolute top-1/2 left-0 h-[350px] w-[350px] rounded-full bg-slate-900/5 blur-[100px]" />
-
+    <section className="gradient-hero border-b border-slate-200/80 relative py-12 lg:py-20">
       <div className="container-x relative">
-        <div className="grid items-center gap-8 lg:gap-12 lg:grid-cols-[1fr_1.1fr] xl:grid-cols-[1fr_1.15fr]">
-          <div>
+        <div className={children ? "grid items-center gap-10 lg:gap-14 lg:grid-cols-2" : "mx-auto max-w-4xl text-center"}>
+          <div className="min-w-0">
             <Eyebrow>{eyebrow}</Eyebrow>
 
-            <h1 className="mt-4 font-display text-3xl leading-[1.14] font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem] xl:text-[3.25rem]">
+            <h1 className="mt-5 font-display text-3xl leading-[1.18] font-bold tracking-normal text-slate-900 sm:text-4xl lg:text-[2.75rem]">
               {titleTop ? <span className="block">{titleTop}</span> : null}
               <span className="block text-emerald-800">{titleBottom}</span>
             </h1>
 
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-600 font-normal">{lead}</p>
+            <p className={`mt-5 max-w-2xl text-base leading-7 text-slate-600 font-normal ${children ? "" : "mx-auto"}`}>{lead}</p>
 
             {badges?.length ? (
-              <ul className="mt-5 flex flex-wrap gap-2">
+              <ul className={`mt-6 flex flex-wrap gap-2 ${children ? "" : "justify-center"}`}>
                 {badges.map((b) => (
                   <li
                     key={b}
@@ -66,7 +62,7 @@ export function PageHero({
               </ul>
             ) : null}
 
-            <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className={`mt-7 flex flex-wrap items-center gap-3 ${children ? "" : "justify-center"}`}>
               <Button href={bookUrl} tone="emerald" size="md">
                 Book Consultation
               </Button>
@@ -76,10 +72,10 @@ export function PageHero({
             </div>
 
             {stats?.length ? (
-              <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-slate-200/80 pt-6 sm:grid-cols-4">
+              <dl className="mt-8 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-slate-200/80 pt-6 sm:grid-cols-4">
                 {stats.map((s, i) => (
                   <div key={s.label} className={i > 0 ? "sm:border-l sm:border-slate-200/80 sm:pl-5" : ""}>
-                    <dt className="font-display text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                    <dt className="font-display text-lg font-bold text-slate-900 tracking-normal">
                       {s.value}
                     </dt>
                     <dd className="mt-0.5 text-[0.68rem] font-bold uppercase tracking-wider text-slate-500">
@@ -91,7 +87,7 @@ export function PageHero({
             ) : null}
           </div>
 
-          <div className="relative w-full">{children}</div>
+          {children ? <div className="relative min-w-0 w-full">{children}</div> : null}
         </div>
       </div>
     </section>
@@ -164,7 +160,12 @@ export function TeamStrip({
   sub,
   eyebrow,
 }: {
-  members: readonly { name: string; gdc: string; image: string }[];
+  members: readonly {
+    name: string;
+    gdc: string;
+    image: string;
+    video?: { mp4: string; webm: string };
+  }[];
   heading: string;
   sub?: string;
   eyebrow?: string;
@@ -179,13 +180,27 @@ export function TeamStrip({
             className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xs transition-all hover:border-slate-300 hover:shadow-md"
           >
             <div className="relative aspect-4/5 overflow-hidden bg-slate-100">
-              <Image
-                src={m.image}
-                alt={m.name}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                className="object-cover object-top transition-transform duration-300 group-hover:scale-103"
-              />
+              {m.video ? (
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  aria-label={m.name}
+                  className="absolute inset-0 h-full w-full object-cover object-top"
+                >
+                  <source src={m.video.webm} type="video/webm" />
+                  <source src={m.video.mp4} type="video/mp4" />
+                </video>
+              ) : (
+                <Image
+                  src={m.image}
+                  alt={m.name}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover object-top transition-transform duration-300 group-hover:scale-103"
+                />
+              )}
             </div>
             <div className="p-4">
               <h3 className="text-base font-semibold text-slate-900">{m.name}</h3>
@@ -213,11 +228,11 @@ export function ProcessSteps({
   steps: readonly { n: string; title: string; body: string }[];
 }) {
   return (
-    <div className="mt-8 grid gap-4 md:grid-cols-3 lg:grid-cols-5">
+    <div className={`mt-10 grid gap-6 sm:grid-cols-2 ${steps.length === 4 ? "lg:grid-cols-4" : steps.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-3"}`}>
       {steps.map((s) => (
         <div
           key={s.n}
-          className="rounded-xl border border-slate-200 bg-white p-5 shadow-2xs transition-all hover:border-slate-300"
+          className="min-w-0 border-t border-slate-300 pt-5"
         >
           <span className="flex h-7 w-7 items-center justify-center rounded-md bg-emerald-50 font-bold text-emerald-800 text-xs border border-emerald-200">
             {s.n}
@@ -241,6 +256,7 @@ export function PricePanel({
   disclaimer,
   ctaLabel,
   ctaHref,
+  className = "mt-10",
 }: {
   eyebrow: string;
   title: string;
@@ -250,9 +266,10 @@ export function PricePanel({
   disclaimer?: string;
   ctaLabel: string;
   ctaHref: string;
+  className?: string;
 }) {
   return (
-    <div className="mx-auto mt-10 max-w-lg overflow-hidden rounded-xl border border-slate-200 bg-white shadow-md">
+    <div className={`mx-auto w-full max-w-lg overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg shadow-slate-900/5 ${className}`}>
       <div className="bg-slate-900 px-6 py-7 text-center text-white relative">
         <p className="inline-block rounded-full bg-emerald-500/20 px-3 py-0.5 text-xs font-bold text-emerald-400 border border-emerald-500/30">
           ★ {eyebrow}
@@ -288,15 +305,15 @@ export function HoursCard({
   note: string;
 }) {
   return (
-    <div className="mx-auto max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-2xs">
+    <div className="flex h-full w-full min-w-0 flex-col rounded-lg border border-slate-200 bg-white p-5 sm:p-6 shadow-2xs">
       <h3 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3">{heading}</h3>
-      <dl className="mt-3 divide-y divide-slate-100">
+      <dl className="mt-3 grow divide-y divide-slate-100">
         {hours.map(([day, time]) => (
-          <div key={day} className="flex items-center justify-between py-2">
-            <dt className="text-xs font-semibold text-slate-800">{day}</dt>
+          <div key={day} className="flex flex-wrap items-center justify-between gap-2 py-2.5">
+            <dt className="text-sm font-medium text-slate-800">{day}</dt>
             <dd
-              className={`text-xs ${
-                time === "Closed" ? "text-slate-400 font-normal" : "font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60"
+              className={`text-sm tabular-nums ${
+                time === "Closed" ? "text-slate-500 font-normal" : "font-semibold text-emerald-800"
               }`}
             >
               {time}
@@ -304,7 +321,7 @@ export function HoursCard({
           </div>
         ))}
       </dl>
-      <p className="mt-4 rounded-md bg-slate-50 border border-slate-200 px-3 py-2 text-center text-xs font-medium text-slate-700">
+      <p className="mt-4 border-t border-slate-200 pt-4 text-sm leading-relaxed text-slate-600">
         {note}
       </p>
     </div>

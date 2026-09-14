@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Button from "@/components/button";
+import ClinicMap from "@/components/clinic-map";
 import {
   CtaBand,
   FaqSection,
@@ -98,7 +99,7 @@ export default function AboutPage() {
           sub={about.teamSub}
         />
         <div className="mt-10 grid items-center gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
+          <div className="relative mx-auto w-full max-w-sm">
             <div className="relative aspect-4/5 w-full overflow-hidden rounded-lg border border-slate-200 shadow-2xs">
               <Image
                 src={principal.image}
@@ -144,17 +145,21 @@ export default function AboutPage() {
           title={about.findUsHeading}
           sub={about.findUsSub}
         />
-        <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        <div className="mt-8 grid gap-x-10 gap-y-6 lg:grid-cols-2">
           {[sk, city].map((clinic) => (
             <article
               key={clinic.slug}
-              className="flex flex-col rounded-lg border border-slate-200 bg-white p-6 shadow-2xs"
+              className="grid min-w-0 gap-6 border-t border-slate-300 pt-6 lg:row-span-5 lg:grid-rows-subgrid"
             >
+              <header>
               <h3 className="text-xl font-bold text-slate-900">{clinic.name}</h3>
               <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-emerald-700">
                 {clinic.label}
               </p>
-              <address className="mt-3 text-sm leading-relaxed text-slate-700 font-medium not-italic">
+              </header>
+              <ClinicMap clinic={clinic} aspect="aspect-16/9" showAddress={false} />
+              <div>
+              <address className="text-sm leading-relaxed text-slate-700 font-medium not-italic">
                 {clinic.lines.map((line) => (
                   <span key={line} className="block">
                     {line}
@@ -176,12 +181,14 @@ export default function AboutPage() {
                 </div>
               )}
 
-              <h4 className="mt-6 text-xs font-semibold uppercase tracking-wider text-slate-400">
+              </div>
+              <div>
+              <h4 className="text-sm font-semibold text-slate-900">
                 Opening Hours
               </h4>
               <dl className="mt-2 divide-y divide-slate-100">
                 {clinic.hours.map(([day, time]) => (
-                  <div key={day} className="flex items-center justify-between py-2">
+                  <div key={day} className="flex flex-wrap items-center justify-between gap-2 py-2">
                     <dt className="text-xs font-medium text-slate-700">{day}</dt>
                     <dd
                       className={`text-xs ${
@@ -193,8 +200,9 @@ export default function AboutPage() {
                   </div>
                 ))}
               </dl>
+              </div>
 
-              <div className="mt-6 flex flex-1 flex-wrap items-end gap-2.5">
+              <div className="flex flex-wrap items-end gap-2.5">
                 <Button href={bookUrl} tone="emerald" size="md">Book Consultation</Button>
                 <Button href={clinic.mapUrl} tone="outline" size="md">
                   Get Directions →

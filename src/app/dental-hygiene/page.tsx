@@ -9,9 +9,11 @@ import {
   SmileGalleryStrip,
 } from "@/components/blocks";
 import Button from "@/components/button";
+import ClinicMap from "@/components/clinic-map";
+import VideoEmbed from "@/components/video-embed";
 import { Check, Section, SectionHeading, TickList } from "@/components/ui";
 import { dentalHygienePage as page } from "@/lib/pages";
-import { bookUrl, clinics } from "@/lib/site";
+import { bookUrl, clinics, img } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Dental Hygienist South Kensington",
@@ -29,7 +31,7 @@ function PriceCard({ p }: { p: (typeof page.prices)[number] }) {
       <h3 className="text-base font-bold text-slate-900">{p.title}</h3>
       <p className="mt-0.5 text-xs text-slate-500">{p.sub}</p>
 
-      <p className="mt-4 flex items-baseline gap-2">
+      <p className="mt-4 flex flex-wrap items-baseline gap-2">
         <span className="font-display text-3xl font-bold tracking-tight text-slate-900">
           {p.price}
         </span>
@@ -63,20 +65,13 @@ export default function DentalHygienePage() {
   return (
     <>
       <PageHero eyebrow={page.eyebrow} titleBottom={page.h1} lead={page.lead}>
-        <div className="mx-auto w-full max-w-md rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center shadow-2xs">
-          <span className="inline-flex rounded-full border border-emerald-200 bg-white px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-800">
-            {page.offerEyebrow}
-          </span>
-          <h2 className="font-display mt-3 text-2xl font-bold tracking-tight text-slate-900">
-            {page.offerHeading}
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-slate-700">{page.offerSub}</p>
-          <div className="mt-5">
-            <Button href={bookUrl} size="lg">
-              {page.offerCta}
-            </Button>
-          </div>
-          <p className="mt-3 text-xs text-slate-600">{page.offerNote}</p>
+        <div className="mx-auto w-full max-w-2xl">
+          <VideoEmbed
+            id="4g8bEJmkiW4"
+            title={page.h1}
+            poster={img.skTreatmentRoom}
+            posterAlt="Dental hygiene treatment room at South Kensington Medical Dental"
+          />
         </div>
       </PageHero>
 
@@ -86,7 +81,7 @@ export default function DentalHygienePage() {
           title={page.pricingHeading}
           sub={page.pricingSub}
         />
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {page.prices.map((p) => (
             <PriceCard key={p.title} p={p} />
           ))}
@@ -103,12 +98,14 @@ export default function DentalHygienePage() {
       </Section>
 
       <Section className="bg-white">
-        <SectionHeading eyebrow={page.airflowEyebrow} title={page.airflowHeading} align="left" />
-        <div className="mt-6 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>
-            <p className="text-sm leading-relaxed text-slate-600">{page.airflowBody}</p>
-            <div className="mt-5">
-              <TickList items={page.airflowPoints} />
+            <SectionHeading eyebrow={page.airflowEyebrow} title={page.airflowHeading} align="left" />
+            <div className="mt-6">
+              <p className="text-sm leading-relaxed text-slate-600">{page.airflowBody}</p>
+              <div className="mt-5">
+                <TickList items={page.airflowPoints} />
+              </div>
             </div>
           </div>
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center">
@@ -133,7 +130,7 @@ export default function DentalHygienePage() {
               <span className="flex h-7 w-7 items-center justify-center rounded-md border border-emerald-200 bg-emerald-50 text-xs font-bold text-emerald-800">
                 {i + 1}
               </span>
-              <h3 className="mt-3 flex items-center gap-2 text-base font-semibold text-slate-900">
+              <h3 className="mt-3 flex flex-wrap items-center gap-2 text-base font-semibold text-slate-900">
                 {s.title}
                 {s.time ? (
                   <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-600">
@@ -159,8 +156,9 @@ export default function DentalHygienePage() {
           title={page.locationHeading}
           sub={page.locationAddress}
         />
-        <div className="mt-8">
+        <div className="mt-8 grid items-stretch gap-6 lg:grid-cols-2">
           <HoursCard heading="Opening Hours" hours={sk.hours} note={sk.hoursNote} />
+          <ClinicMap clinic={sk} aspect="aspect-16/9" />
         </div>
       </Section>
 

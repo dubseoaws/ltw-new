@@ -42,34 +42,57 @@ function Specialties({ items }: { items: readonly string[] }) {
 
 function DentistCard({ d }: { d: Dentist }) {
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xs transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
+    <article className="group min-w-0 flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-2xs transition-shadow hover:shadow-md">
       <div className="relative aspect-4/5 overflow-hidden bg-slate-100">
-        <Image
-          src={d.image}
-          alt={`${d.name} — ${d.role} at Teeth Whitening London`}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-        />
+        {d.video ? (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-label={`${d.name} — ${d.role} at Teeth Whitening London`}
+            className="absolute inset-0 h-full w-full object-cover object-top"
+          >
+            <source src={d.video.webm} type="video/webm" />
+            <source src={d.video.mp4} type="video/mp4" />
+          </video>
+        ) : (
+          <Image
+            src={d.image}
+            alt={`${d.name} — ${d.role} at Teeth Whitening London`}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 20vw"
+            className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          />
+        )}
         <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-slate-800 shadow-2xs backdrop-blur">
           GDC {d.gdc}
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-4">
         <h3 className="font-display text-lg font-bold leading-snug text-slate-900">{d.name}</h3>
         <p className="mt-0.5 text-xs font-semibold uppercase tracking-wider text-emerald-700">
           {d.role}
         </p>
         {d.quals ? (
-          <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-slate-500">{d.quals}</p>
+          <p className="mt-2 text-xs leading-relaxed text-slate-500">{d.quals}</p>
         ) : null}
 
         {d.bio?.[0] ? (
-          <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-slate-600">{d.bio[0]}</p>
+          <details className="mt-3 border-t border-slate-100 pt-2">
+            <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-emerald-800">
+              Read More
+            </summary>
+            <div className="space-y-3 pb-3">
+              {d.bio.map((paragraph) => (
+                <p key={paragraph} className="text-sm leading-relaxed text-slate-600">{paragraph}</p>
+              ))}
+            </div>
+          </details>
         ) : null}
 
-        <Specialties items={d.specialties.slice(0, 3)} />
+        <Specialties items={d.specialties} />
 
         <div className="mt-5 flex-1" />
         <Button href={bookUrl} tone="outline" size="sm" className="w-full">
@@ -89,7 +112,7 @@ export default function DentistsPage() {
         lead={dentistsPage.lead}
         stats={dentistsPage.stats}
       >
-        <div className="relative mx-auto aspect-4/5 w-full max-w-sm overflow-hidden rounded-xl border border-slate-200 shadow-sm bg-white lg:max-w-md">
+        <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-lg border border-slate-200 shadow-sm bg-white lg:max-w-md">
           <Image
             src={img.dentistsHero}
             alt="Teeth Whitening London dental team"
@@ -114,13 +137,13 @@ export default function DentistsPage() {
         >
           <a
             href="#dentists"
-            className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700"
+            className="inline-flex min-h-11 items-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700"
           >
             Dentists ({dentists.length + 1})
           </a>
           <a
             href="#hygienists"
-            className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700"
+            className="inline-flex min-h-11 items-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700"
           >
             Hygiene team ({hygienists.length})
           </a>

@@ -42,16 +42,12 @@ export default function HomePage() {
       />
 
       {/* ------------------------------------------------------------ HERO */}
-      <section className="bg-gradient-to-b from-[#F8FAFC] via-[#F1F5F9]/50 to-[#FFFFFF] border-b border-slate-200/80 relative overflow-hidden py-12 lg:py-16">
-        {/* Soft Ambient Light Glow */}
-        <div className="pointer-events-none absolute -top-40 right-0 h-[600px] w-[600px] rounded-full bg-emerald-500/5 blur-[120px]" />
-        <div className="pointer-events-none absolute top-1/2 left-0 h-[400px] w-[400px] rounded-full bg-slate-900/5 blur-[100px]" />
-
+      <section className="gradient-hero border-b border-slate-200/80 relative py-12 lg:py-16">
         <div className="container-x relative grid items-center gap-10 lg:gap-12 lg:grid-cols-[1fr_1.15fr]">
           <div>
             <Eyebrow>{home.eyebrow}</Eyebrow>
 
-            <h1 className="mt-4 font-display text-3xl leading-[1.14] font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-[3rem] xl:text-[3.4rem]">
+            <h1 className="mt-5 font-display text-3xl leading-[1.18] font-bold tracking-normal text-slate-900 sm:text-4xl lg:text-[3rem]">
               <span className="block">{home.h1a}</span>
               <span className="block text-emerald-800">{home.h1b}</span>
             </h1>
@@ -134,7 +130,7 @@ export default function HomePage() {
             </div>
 
             {/* Hero Video Showcase (Replaces Before/After Image) */}
-            <div className="grid gap-4 sm:grid-cols-[1.1fr_0.9fr] items-stretch">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 items-stretch">
               <div className="relative aspect-16/9 overflow-hidden rounded-xl border border-slate-200/90 shadow-md bg-slate-950">
                 <iframe
                   src="https://www.youtube.com/embed/BIUdsbvWGrY?autoplay=1&mute=1&loop=1&playlist=BIUdsbvWGrY&controls=1&rel=0"
@@ -164,7 +160,7 @@ export default function HomePage() {
                   <a
                     href={bookUrl}
                     rel="noopener"
-                    className="inline-flex rounded-lg bg-emerald-700 px-3.5 py-1.5 text-xs font-bold text-white shadow-2xs transition hover:bg-emerald-800"
+                    className="inline-flex min-h-11 items-center rounded-lg bg-emerald-700 px-3.5 py-1.5 text-xs font-bold text-white shadow-2xs transition hover:bg-emerald-800"
                   >
                     Book now →
                   </a>
@@ -212,7 +208,7 @@ export default function HomePage() {
           {homeResults.map((r) => (
             <figure key={r.before} className="group">
               <BeforeAfterSlider {...r} />
-              <figcaption className="mt-3 flex items-center justify-between px-1">
+              <figcaption className="mt-3 flex flex-wrap items-start justify-between gap-2 px-1">
                 <span className="text-sm font-bold text-slate-900">{r.title}</span>
                 <span className="rounded-md bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 border border-slate-200">
                   {r.meta}
@@ -331,7 +327,7 @@ export default function HomePage() {
           {packageStepsNote}
         </p>
 
-        <div className="mt-10 rounded-xl border border-slate-200 bg-white p-6 lg:p-8 shadow-2xs">
+        <div className="mt-10 border-t border-slate-200 pt-8">
           <h3 className="text-xl font-bold text-slate-900">
             {home.suitabilityHeading}
           </h3>

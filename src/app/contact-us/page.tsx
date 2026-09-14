@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { CtaBand, GoogleReviews, HoursCard, PageHero, SmileGalleryStrip } from "@/components/blocks";
 import Button from "@/components/button";
-import { Section, SectionHeading, TickList } from "@/components/ui";
+import ClinicMap, { type ClinicMapClinic } from "@/components/clinic-map";
+import { Eyebrow, Section, TickList } from "@/components/ui";
 import { contactPage } from "@/lib/pages";
 import { bookUrl, clinics, site } from "@/lib/site";
 
@@ -21,10 +22,12 @@ function ContactCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-2xs">
-      <h2 className="text-base font-bold text-slate-900">{title}</h2>
-      <p className="mt-1 text-sm text-slate-600">{sub}</p>
-      <div className="mt-3 text-sm font-semibold text-emerald-800">{children}</div>
+    <div className="grid min-w-0 gap-3 border-t border-slate-200 py-5 sm:grid-cols-[9rem_minmax(0,1fr)] sm:gap-5">
+      <div>
+        <h2 className="text-base font-bold text-slate-900">{title}</h2>
+        <p className="mt-1 text-sm leading-relaxed text-slate-600">{sub}</p>
+      </div>
+      <div className="min-w-0 text-sm font-semibold leading-relaxed text-emerald-800 sm:pt-0.5">{children}</div>
     </div>
   );
 }
@@ -40,7 +43,7 @@ function ClinicBlock({
   hoursHeading,
   hours,
   hoursNote,
-  mapUrl,
+  clinic,
 }: {
   badge?: string;
   heading: string;
@@ -52,44 +55,54 @@ function ClinicBlock({
   hoursHeading: string;
   hours: readonly (readonly [string, string])[];
   hoursNote: string;
-  mapUrl: string;
+  clinic: ClinicMapClinic & { slug: string };
 }) {
   return (
-    <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
-      <div>
-        {badge ? (
-          <span className="inline-flex rounded-full border border-emerald-200/80 bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-800">
-            {badge}
-          </span>
-        ) : null}
-        <h2 className="font-display mt-3 text-2xl font-bold tracking-tight text-slate-900">
-          {heading}
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-slate-600">{body}</p>
-
-        <h3 className="mt-6 text-sm font-bold text-slate-900">{addressHeading}</h3>
-        <address className="mt-1.5 text-sm not-italic leading-relaxed text-slate-600">
-          {address.map((line) => (
-            <span key={line} className="block">
-              {line}
+    <article id={clinic.slug} className="grid min-w-0 scroll-mt-28 gap-6 border-t border-slate-200 pt-6 lg:row-span-4 lg:grid-rows-subgrid">
+      <header>
+        <div className="flex flex-wrap items-center gap-3">
+          <h2 className="font-display text-2xl font-bold leading-tight text-slate-900">
+            {heading}
+          </h2>
+          {badge ? (
+            <span className="inline-flex rounded-md border border-emerald-200/80 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-800">
+              {badge}
             </span>
-          ))}
-        </address>
-
-        <h3 className="mt-6 text-sm font-bold text-slate-900">{travelHeading}</h3>
-        <div className="mt-2">
-          <TickList items={travel} />
+          ) : null}
         </div>
+        <p className="mt-3 text-sm leading-relaxed text-slate-600">{body}</p>
+      </header>
 
-        <div className="mt-6">
-          <Button href={mapUrl} tone="outline" size="md">
-            Get Directions
-          </Button>
+      <ClinicMap clinic={clinic} aspect="aspect-16/9" showAddress={false} />
+
+      <div className="grid content-start gap-6 sm:grid-cols-[0.8fr_1.2fr] lg:grid-cols-1 xl:grid-cols-[0.8fr_1.2fr]">
+        <div>
+          <h3 className="text-sm font-bold text-slate-900">{addressHeading}</h3>
+          <address className="mt-2 text-sm not-italic leading-relaxed text-slate-600">
+            {address.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </address>
+          <div className="mt-4">
+            <Button href={clinic.mapUrl} tone="outline" size="sm">
+              Get Directions
+            </Button>
+          </div>
+        </div>
+        <div>
+          <h3 className="text-sm font-bold text-slate-900">{travelHeading}</h3>
+          <div className="mt-2">
+            <TickList items={travel} />
+          </div>
         </div>
       </div>
 
-      <HoursCard heading={hoursHeading} hours={hours} note={hoursNote} />
-    </div>
+      <div className="[&>div]:max-w-none">
+        <HoursCard heading={hoursHeading} hours={hours} note={hoursNote} />
+      </div>
+    </article>
   );
 }
 
@@ -105,31 +118,31 @@ export default function ContactPage() {
         titleBottom={contactPage.h1Bottom}
         lead={contactPage.lead}
       >
-        <div className="grid gap-4">
+        <div className="grid">
           <ContactCard title={contactPage.cards[0].title} sub={contactPage.cards[0].sub}>
-            <a href={site.phoneHref} className="hover:underline">
+            <a href={site.phoneHref} className="inline-flex min-h-11 items-center hover:underline">
               {site.phone}
             </a>
           </ContactCard>
           <ContactCard title={contactPage.cards[1].title} sub={contactPage.cards[1].sub}>
-            <a href={`mailto:${site.email}`} className="hover:underline">
+            <a href={`mailto:${site.email}`} className="inline-flex min-h-11 items-center break-all hover:underline">
               {site.email}
             </a>
           </ContactCard>
           <ContactCard title={contactPage.cards[2].title} sub={contactPage.cards[2].sub}>
-            <span className="block font-medium text-slate-700">
+            <a href="#south-kensington" className="block py-2 font-medium text-slate-700 underline decoration-slate-300 underline-offset-4 hover:text-emerald-800">
               South Kensington: 20 Old Brompton Road, SW7 3DL
-            </span>
-            <span className="mt-1 block font-medium text-slate-700">
+            </a>
+            <a href="#city-of-london" className="block py-2 font-medium text-slate-700 underline decoration-slate-300 underline-offset-4 hover:text-emerald-800">
               City of London: 5 Ave Maria Lane, EC4M 7AQ
-            </span>
+            </a>
           </ContactCard>
         </div>
       </PageHero>
 
       <Section className="bg-white">
-        <SectionHeading eyebrow={contactPage.visitEyebrow} title={contactPage.sk.heading} />
-        <div className="mt-8">
+        <Eyebrow>{contactPage.visitEyebrow}</Eyebrow>
+        <div className="mt-6 grid gap-x-10 gap-y-10 lg:grid-cols-2 xl:gap-x-12">
           <ClinicBlock
             heading={contactPage.sk.heading}
             body={contactPage.sk.body}
@@ -140,25 +153,22 @@ export default function ContactPage() {
             hoursHeading={contactPage.sk.hoursHeading}
             hours={sk.hours}
             hoursNote={contactPage.sk.hoursNote}
-            mapUrl={sk.mapUrl}
+            clinic={sk}
+          />
+          <ClinicBlock
+            badge={contactPage.city.badge}
+            heading={contactPage.city.heading}
+            body={contactPage.city.body}
+            addressHeading={contactPage.city.addressHeading}
+            address={city.lines}
+            travelHeading={contactPage.sk.travelHeading}
+            travel={contactPage.city.travel}
+            hoursHeading={contactPage.city.hoursHeading}
+            hours={city.hours}
+            hoursNote={contactPage.city.hoursNote}
+            clinic={city}
           />
         </div>
-      </Section>
-
-      <Section className="border-t border-slate-200 bg-slate-50">
-        <ClinicBlock
-          badge={contactPage.city.badge}
-          heading={contactPage.city.heading}
-          body={contactPage.city.body}
-          addressHeading={contactPage.city.addressHeading}
-          address={city.lines}
-          travelHeading={contactPage.sk.travelHeading}
-          travel={contactPage.city.travel}
-          hoursHeading={contactPage.city.hoursHeading}
-          hours={city.hours}
-          hoursNote={contactPage.city.hoursNote}
-          mapUrl={city.mapUrl}
-        />
       </Section>
 
       <SmileGalleryStrip className="bg-white border-y border-slate-200" />

@@ -34,6 +34,8 @@ export const clinics = {
     lines: ["20 Old Brompton Road", "South Kensington", "London SW7 3DL"],
     note: "Directly opposite South Kensington tube station",
     mapUrl: "https://maps.app.goo.gl/si9Bi4we4duoRonG8",
+    mapEmbed:
+      "https://www.google.com/maps?q=20+Old+Brompton+Road,+South+Kensington,+London+SW7+3DL&output=embed",
     hours: [
       ["Monday", "9:00 AM – 6:00 PM"],
       ["Tuesday", "9:00 AM – 8:00 PM"],
@@ -52,6 +54,8 @@ export const clinics = {
     lines: ["5 Ave Maria Lane", "City of London", "London EC4M 7AQ"],
     note: "Near St Paul's Cathedral — now open",
     mapUrl: "https://maps.app.goo.gl/LbxqaAGkRC3MzZRV8",
+    mapEmbed:
+      "https://www.google.com/maps?q=5+Ave+Maria+Lane,+City+of+London,+London+EC4M+7AQ&output=embed",
     hours: [
       ["Monday", "8:00 AM – 8:00 PM"],
       ["Tuesday", "8:00 AM – 8:00 PM"],
@@ -129,6 +133,7 @@ export const footerServices = [
 /* ---------------------------------------------------------------- images */
 
 const CLD = "https://res.cloudinary.com/da1zmp1ib/image/upload";
+const CLD_VIDEO = "https://res.cloudinary.com/da1zmp1ib/video/upload";
 
 export const img = {
   clinicAbout: `${CLD}/v1765883125/southkenmd-about-img_iyiv4g.jpg`,
@@ -479,6 +484,7 @@ export type Dentist = {
   quals?: string;
   gdc: string;
   image: string;
+  video?: { mp4: string; webm: string };
   bio?: string[];
   specialties: string[];
 };
@@ -520,7 +526,11 @@ export const team: Dentist[] = [
     quals:
       "BDS (Brazil), ORE (UK), ADS Certificate in Cosmetic and Aesthetic Restorative Dentistry",
     gdc: "229601",
-    image: `${CLD}/v1765880758/Dr-Narges-Ameri_gejrdv.jpg`,
+    image: `${CLD_VIDEO}/so_0/v1767383564/dr_Andreia_3x4_ns1t8d.jpg`,
+    video: {
+      mp4: `${CLD_VIDEO}/v1767383564/dr_Andreia_3x4_ns1t8d.mp4`,
+      webm: `${CLD_VIDEO}/v1767383564/dr_Andreia_3x4_ns1t8d.webm`,
+    },
     bio: [
       "Dr. Andreia Phipps qualified in 2002 in Fortaleza, Brazil. She is a friendly and enthusiastic dentist who believes in patient-centred dentistry, taking time to build positive relationships.",
     ],
@@ -531,7 +541,11 @@ export const team: Dentist[] = [
     role: "Dentist",
     quals: "London Gold Medal for Outstanding Achievement",
     gdc: "302422",
-    image: `${CLD}/v1771765267/Teeth_Whitening_By_Dr_Reza_Davari_after_k2pmue.jpg`,
+    image: `${CLD_VIDEO}/so_0/v1767444905/2026-01-03_12.52.35_vwvhgi.jpg`,
+    video: {
+      mp4: `${CLD_VIDEO}/v1767444905/2026-01-03_12.52.35_vwvhgi.mp4`,
+      webm: `${CLD_VIDEO}/v1767444905/2026-01-03_12.52.35_vwvhgi.webm`,
+    },
     bio: [
       "Dr. Reza is a caring and dedicated dentist. Having worked in both hospital and practice settings, he has developed a broad range of experience that helps him provide exceptional care.",
     ],
@@ -574,8 +588,18 @@ export const team: Dentist[] = [
 
 export const homeTeam = [
   { name: "Dr. Yasha Y Shirazi", gdc: "GDC: 195843", image: principal.image },
-  { name: "Dr. Andreia Phipps", gdc: "GDC: 229601", image: team[1].image },
-  { name: "Dr. Reza Davari", gdc: "GDC: 302422", image: team[2].image },
+  {
+    name: "Dr. Andreia Phipps",
+    gdc: "GDC: 229601",
+    image: team[1].image,
+    video: team[1].video,
+  },
+  {
+    name: "Dr. Reza Davari",
+    gdc: "GDC: 302422",
+    image: team[2].image,
+    video: team[2].video,
+  },
   { name: "Jack Button", gdc: "GDC: 244367", image: team[4].image },
 ];
 

@@ -18,11 +18,11 @@ export default function GalleryPage() {
         lead={gallery.lead}
         stats={gallery.stats}
       >
-        <div className="mx-auto w-full max-w-md overflow-hidden rounded-xl border border-slate-200 shadow-sm bg-white">
+        <div className="mx-auto w-full max-w-md">
           <BeforeAfterSlider
             {...heroBeforeAfter}
             priority
-            className="rounded-none"
+            className="rounded-lg"
             sizes="(max-width: 640px) 100vw, 440px"
           />
         </div>
@@ -76,7 +76,7 @@ export default function GalleryPage() {
                 </p>
 
                 <details className="group mt-3 border-t border-slate-100 pt-3">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-2 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-emerald-700">
+                  <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 text-xs font-bold uppercase tracking-normal text-slate-700 hover:text-emerald-700">
                     Full case study
                     <span className="transition-transform group-open:rotate-180" aria-hidden="true">
                       ▾
@@ -121,8 +121,8 @@ export default function GalleryPage() {
 
                 {c.quote ? (
                   <blockquote className="mt-auto pt-4">
-                    <div className="rounded-md bg-slate-50 border border-slate-200 px-4 py-3">
-                      <p className="line-clamp-4 text-sm leading-relaxed font-medium text-slate-800 italic">
+                    <div className="border-l-2 border-emerald-200 pl-4">
+                      <p className="text-sm leading-relaxed font-medium text-slate-800 italic">
                         “{c.quote}”
                       </p>
                     </div>
@@ -137,7 +137,7 @@ export default function GalleryPage() {
       {/* --------------------------------------------------------- MORE RESULTS */}
       <Section className="bg-white">
         <SectionHeading eyebrow={gallery.moreEyebrow} title={gallery.moreHeading} />
-        <div className="mx-auto mt-8 grid max-w-4xl gap-5 grid-cols-2 sm:grid-cols-3">
+        <div className="mx-auto mt-8 grid max-w-4xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {galleryMore.map((m) => (
             <BeforeAfterSlider
               key={m.before}
@@ -146,7 +146,7 @@ export default function GalleryPage() {
               beforeAlt="Teeth whitening before"
               afterAlt="Teeth whitening after"
               compact
-              sizes="(max-width: 640px) 50vw, 280px"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 280px"
             />
           ))}
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 
 export type FaqItem = { q: string; a: string };
 
@@ -12,18 +12,19 @@ export default function Accordion({
   numbered?: boolean;
 }) {
   const [open, setOpen] = useState<number | null>(0);
+  const accordionId = useId();
 
   return (
-    <div className="space-y-2.5">
+    <div className="divide-y divide-slate-200 border-y border-slate-200">
       {items.map((item, i) => {
         const isOpen = open === i;
         return (
           <div
             key={item.q}
-            className={`overflow-hidden rounded-lg border transition-all ${
+            className={`overflow-hidden transition-colors ${
               isOpen
-                ? "border-emerald-600/40 bg-white shadow-sm"
-                : "border-slate-200 bg-white hover:border-slate-300"
+                ? "bg-emerald-50/30"
+                : "bg-white hover:bg-slate-50"
             }`}
           >
             <h3>
@@ -31,7 +32,8 @@ export default function Accordion({
                 type="button"
                 onClick={() => setOpen(isOpen ? null : i)}
                 aria-expanded={isOpen}
-                className="flex w-full items-center gap-3 px-4 py-3.5 text-left cursor-pointer transition-colors"
+                aria-controls={`${accordionId}-${i}`}
+                className="flex min-h-14 w-full items-center gap-3 px-4 py-5 text-left cursor-pointer transition-colors"
               >
                 {numbered ? (
                   <span
@@ -62,12 +64,14 @@ export default function Accordion({
               </button>
             </h3>
             <div
+              id={`${accordionId}-${i}`}
+              aria-hidden={!isOpen}
               className={`grid transition-all duration-200 ease-in-out ${
                 isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
               }`}
             >
               <div className="overflow-hidden">
-                <p className="px-4 pb-4 pt-1 text-sm leading-relaxed text-slate-600 font-normal border-t border-slate-100">{item.a}</p>
+                <p className="max-w-[75ch] px-4 pb-6 text-sm leading-7 text-slate-600 font-normal">{item.a}</p>
               </div>
             </div>
           </div>

@@ -12,6 +12,7 @@ export default function CityOfLondonPage() {
     <LocationPage
       clinic={clinics.cityOfLondon}
       bookHref={bookCityUrl}
+      heroMap
       content={{
         ...cityOfLondon,
         crossClinic: { ...cityOfLondon.otherClinic, href: "/south-kensington" },

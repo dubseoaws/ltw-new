@@ -83,13 +83,14 @@ export default function PricingPage() {
       {/* ---------------------------------------------------- COMPARISON TABLE */}
       <Section className="bg-white">
         <SectionHeading eyebrow="Compare" title={pricing.comparisonHeading} />
-        <div className="mt-8 overflow-x-auto rounded-lg border border-slate-200 shadow-2xs">
+        <div className="mt-8 overflow-x-auto overscroll-x-contain rounded-lg border border-slate-200 shadow-2xs" tabIndex={0} role="region" aria-label={pricing.comparisonHeading}>
           <table className="w-full min-w-3xl border-collapse text-left">
             <thead>
               <tr className="bg-slate-900 text-white">
                 {pricing.comparisonHeaders.map((h) => (
                   <th
                     key={h}
+                    scope="col"
                     className="px-4 py-3 text-xs font-semibold uppercase tracking-wider whitespace-nowrap text-slate-300"
                   >
                     {h}
@@ -144,7 +145,9 @@ export default function PricingPage() {
           sub={pricing.pricesSub}
         />
 
+        <div className="mx-auto mt-8 grid max-w-5xl items-start gap-6 lg:grid-cols-2">
         <PricePanel
+          className="max-w-none"
           eyebrow="All-inclusive"
           title={pricing.mainPackage.title}
           price={pricing.mainPackage.price}
@@ -154,15 +157,16 @@ export default function PricingPage() {
           ctaHref={bookUrl}
         />
 
-        <div className="mx-auto mt-6 max-w-xl rounded-md border border-amber-200 bg-amber-50 px-4 py-3.5 shadow-2xs">
+        <div className="grid gap-5">
+        <div className="rounded-md border border-amber-200 bg-amber-50 px-5 py-4">
           <p className="text-xs font-bold text-amber-900">⚠ {pricing.checkupNotice.title}</p>
           <p className="mt-1 text-xs leading-relaxed text-amber-800 font-medium">{pricing.checkupNotice.body}</p>
         </div>
 
-        <div className="mx-auto mt-6 grid max-w-2xl gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
           {pricing.extras.map((extra) => (
             <div key={extra.title} className="rounded-lg border border-slate-200 bg-white p-5 shadow-2xs">
-              <div className="flex items-baseline justify-between">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h3 className="text-base font-bold text-slate-900">{extra.title}</h3>
                 <span className="font-display text-xl font-bold text-emerald-700">
                   {extra.price}
@@ -171,6 +175,8 @@ export default function PricingPage() {
               <p className="mt-2 text-sm leading-relaxed text-slate-600 font-normal">{extra.body}</p>
             </div>
           ))}
+        </div>
+        </div>
         </div>
       </Section>
 

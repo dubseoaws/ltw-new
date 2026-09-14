@@ -16,9 +16,9 @@ const tones: Record<Tone, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: "px-3.5 py-1.5 text-xs font-semibold rounded-md",
-  md: "px-4.5 py-2 text-xs font-semibold rounded-lg sm:text-sm",
-  lg: "px-5 py-2.5 text-sm font-semibold rounded-lg",
+  sm: "min-h-11 px-3.5 py-2 text-xs font-semibold rounded-md",
+  md: "min-h-11 px-5 py-2.5 text-sm font-semibold rounded-lg",
+  lg: "min-h-12 px-6 py-3 text-sm font-semibold rounded-lg",
 };
 
 type Props = {
@@ -36,7 +36,7 @@ export default function Button({
   size = "md",
   className = "",
 }: Props) {
-  const cls = `inline-flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap transition-colors duration-150 ${tones[tone]} ${sizes[size]} ${className}`;
+  const cls = `inline-flex max-w-full items-center justify-center gap-2 cursor-pointer whitespace-normal text-center transition-colors duration-150 ${tones[tone]} ${sizes[size]} ${className}`;
   const external = href.startsWith("http") || href.startsWith("tel:") || href.startsWith("mailto:");
 
   if (external) {

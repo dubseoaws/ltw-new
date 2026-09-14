@@ -2,6 +2,7 @@ import Image from "next/image";
 import Accordion, { type FaqItem } from "@/components/accordion";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import Button from "@/components/button";
+import ClinicMap from "@/components/clinic-map";
 import {
   AreasGrid,
   CtaBand,
@@ -29,6 +30,7 @@ type Clinic = {
   lines: readonly string[];
   note: string;
   mapUrl: string;
+  mapEmbed: string;
   hours: readonly (readonly [string, string])[];
   hoursNote: string;
 };
@@ -81,10 +83,12 @@ export default function LocationPage({
   content: c,
   clinic,
   bookHref,
+  heroMap = false,
 }: {
   content: LocationContent;
   clinic: Clinic;
   bookHref: string;
+  heroMap?: boolean;
 }) {
   const localBusiness = {
     "@context": "https://schema.org",
@@ -118,16 +122,20 @@ export default function LocationPage({
         badges={c.badges}
         stats={c.stats}
       >
-        <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border border-slate-200 shadow-sm bg-white">
-          <Image
-            src={c.insideImages[0].src}
-            alt={c.insideImages[0].alt}
-            fill
-            sizes="(max-width: 1024px) 100vw, 55vw"
-            className="object-cover"
-            priority
-          />
-        </div>
+        {heroMap ? (
+          <ClinicMap clinic={clinic} showAddress={false} />
+        ) : (
+          <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border border-slate-200 shadow-sm bg-white">
+            <Image
+              src={c.insideImages[0].src}
+              alt={c.insideImages[0].alt}
+              fill
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="object-cover"
+              priority
+            />
+          </div>
+        )}
         <div className="mt-4 rounded-lg bg-white p-4 shadow-2xs border border-slate-200">
           <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">
             {clinic.label}
@@ -151,11 +159,11 @@ export default function LocationPage({
       {/* ------------------------------------------------------- RESULTS */}
       <Section className="bg-white">
         <SectionHeading eyebrow="Before & after" title={c.resultsHeading} sub={c.resultsSub} />
-        <div className="mt-8 grid gap-6 sm:grid-cols-2">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {homeResults.map((r) => (
             <figure key={r.before}>
-              <BeforeAfterSlider {...r} />
-              <figcaption className="mt-3 flex items-center justify-between px-1">
+              <BeforeAfterSlider {...r} compact sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" />
+              <figcaption className="mt-3 flex flex-wrap items-start justify-between gap-2 px-1">
                 <span className="text-sm font-bold text-slate-900">{r.title}</span>
                 <span className="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700 border border-slate-200">
                   {r.meta}
@@ -257,14 +265,14 @@ export default function LocationPage({
         <SectionHeading eyebrow="Coverage" title={c.areasHeading} sub={c.areasSub} />
         <AreasGrid areas={c.areas} />
 
-        <div className="mt-10 overflow-hidden rounded-xl bg-slate-900 p-8 text-center text-white lg:p-10 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
+        <div className="mt-10 border-t border-slate-300 pt-8 text-center">
+          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
             {c.crossClinic.eyebrow}
           </p>
-          <h3 className="mt-2 text-xl font-bold sm:text-2xl">
+          <h3 className="mt-2 text-xl font-bold text-slate-900 sm:text-2xl">
             {c.crossClinic.title}
           </h3>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-300 font-normal">
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600 font-normal">
             {c.crossClinic.body}
           </p>
           <div className="mt-6 flex justify-center">
@@ -308,12 +316,13 @@ export default function LocationPage({
       {/* --------------------------------------------------------- HOURS */}
       <Section className="bg-white">
         <SectionHeading eyebrow={clinic.label} title={c.hoursHeading} />
-        <div className="mt-8">
+        <div className="mt-8 grid items-stretch gap-6 lg:grid-cols-2">
           <HoursCard
             heading={clinic.lines.join(", ")}
             hours={clinic.hours}
             note={clinic.hoursNote}
           />
+          <ClinicMap clinic={clinic} aspect="aspect-16/9" />
         </div>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Button href={site.phoneHref} tone="outline" size="md">

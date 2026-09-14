@@ -7,11 +7,11 @@ import {
   PageHero,
   SmileGalleryStrip,
 } from "@/components/blocks";
-import BeforeAfterSlider from "@/components/before-after-slider";
 import Button from "@/components/button";
+import VideoEmbed from "@/components/video-embed";
 import { Section, SectionHeading, TickList } from "@/components/ui";
 import { sensitiveTeethPage as page } from "@/lib/pages";
-import { bookUrl, heroBeforeAfter } from "@/lib/site";
+import { bookUrl, img } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Teeth Whitening for Sensitive Teeth",
@@ -27,12 +27,12 @@ function ComparisonTable({
   rows: readonly (readonly string[])[];
 }) {
   return (
-    <div className="mt-8 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-2xs">
+    <div className="mt-8 overflow-x-auto overscroll-x-contain rounded-lg border border-slate-200 bg-white shadow-2xs" tabIndex={0} role="region" aria-label={page.tableHeading}>
       <table className="w-full min-w-[40rem] text-left text-sm">
         <thead>
           <tr className="bg-slate-900 text-white">
             {head.map((h) => (
-              <th key={h} className="px-5 py-3 font-semibold">
+              <th key={h} scope="col" className="px-5 py-4 font-semibold">
                 {h}
               </th>
             ))}
@@ -40,7 +40,7 @@ function ComparisonTable({
         </thead>
         <tbody className="divide-y divide-slate-100">
           {rows.map((row) => (
-            <tr key={row[0]} className="align-top">
+            <tr key={row[0]} className="align-top even:bg-slate-50">
               {row.map((cell, i) => (
                 <td
                   key={cell}
@@ -69,8 +69,13 @@ export default function SensitiveTeethPage() {
         badges={page.badges}
         stats={page.stats}
       >
-        <div className="mx-auto w-full max-w-md">
-          <BeforeAfterSlider {...heroBeforeAfter} priority />
+        <div className="mx-auto w-full max-w-2xl">
+          <VideoEmbed
+            id="mWMhRZo2E54"
+            title={page.h1}
+            poster={img.skTreatmentRoom}
+            posterAlt="Treatment room at South Kensington Medical Dental"
+          />
         </div>
       </PageHero>
 
@@ -78,7 +83,7 @@ export default function SensitiveTeethPage() {
         <SectionHeading eyebrow="Suitability" title={page.canHeading} />
         <div className="mx-auto mt-6 max-w-3xl space-y-4">
           {page.can.map((p) => (
-            <p key={p.slice(0, 30)} className="text-sm leading-relaxed text-slate-600">
+            <p key={p.slice(0, 30)} className="text-base leading-7 text-slate-600">
               {p}
             </p>
           ))}
@@ -104,14 +109,18 @@ export default function SensitiveTeethPage() {
       </Section>
 
       <Section className="border-t border-slate-200 bg-slate-50">
-        <SectionHeading
-          eyebrow="Dentist supervision"
-          title={page.supervisionHeading}
-          sub={page.supervisionSub}
-          align="left"
-        />
-        <div className="mt-6 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-          <TickList items={page.supervision} />
+        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <SectionHeading
+              eyebrow="Dentist supervision"
+              title={page.supervisionHeading}
+              sub={page.supervisionSub}
+              align="left"
+            />
+            <div className="mt-6">
+              <TickList items={page.supervision} />
+            </div>
+          </div>
           <div className="rounded-xl border border-slate-200 bg-white p-6">
             <h3 className="font-display text-lg font-bold text-slate-900">{page.midCtaHeading}</h3>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">{page.midCtaSub}</p>

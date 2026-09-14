@@ -37,7 +37,7 @@ export default function BlogListing({ page }: { page: number }) {
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div>
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2">
               {posts.map((post) => (
                 <BlogCard key={post.slug} post={post} />
               ))}

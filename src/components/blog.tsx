@@ -29,6 +29,7 @@ export function PostImage({
       fill
       sizes={sizes}
       priority={priority}
+      unoptimized={!post.image || post.image.startsWith("/")}
       className={className}
     />
   );
@@ -44,6 +45,7 @@ export function BlogHeroBanner({ caption }: { caption?: string }) {
           fill
           sizes="(min-width: 1024px) 55vw, 100vw"
           priority
+          unoptimized
           className="object-cover"
         />
         <div className="absolute inset-0 bg-linear-to-t from-slate-900/70 via-slate-900/10 to-transparent" />
@@ -91,7 +93,7 @@ export function BlogCard({ post }: { post: BlogPostMeta }) {
         <p className="text-sm leading-relaxed text-slate-600">{post.excerpt}</p>
         <Link
           href={`/blog/${post.slug}`}
-          className="mt-auto pt-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800"
+          className="mt-auto inline-flex min-h-11 items-center pt-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800"
         >
           Read More →
         </Link>
@@ -102,9 +104,9 @@ export function BlogCard({ post }: { post: BlogPostMeta }) {
 
 export function FeaturedCard({ post }: { post: BlogPostMeta }) {
   return (
-    <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div className="grid lg:grid-cols-2">
-        <Link href={`/blog/${post.slug}`} className="relative block aspect-16/9 bg-slate-100 lg:aspect-auto lg:min-h-[320px]">
+    <article className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      <div className="grid">
+        <Link href={`/blog/${post.slug}`} className="relative block aspect-[2/1] bg-slate-100">
           <PostImage post={post} sizes="(min-width: 1024px) 50vw, 100vw" priority />
         </Link>
         <div className="flex flex-col gap-3 p-6 lg:p-8">
@@ -114,7 +116,7 @@ export function FeaturedCard({ post }: { post: BlogPostMeta }) {
             </span>
           </div>
           <PostMeta post={post} />
-          <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-slate-900 lg:text-3xl">
+          <h2 className="font-display text-xl font-bold leading-snug tracking-normal text-slate-900 sm:text-2xl">
             <Link href={`/blog/${post.slug}`} className="hover:text-teal-800">
               {post.title}
             </Link>
@@ -134,14 +136,15 @@ export function FeaturedCard({ post }: { post: BlogPostMeta }) {
 
 export function BlogSidebar({ activeCategory }: { activeCategory?: string }) {
   return (
-    <aside className="flex flex-col gap-6 lg:sticky lg:top-24">
-      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-2xs">
+    <aside className="min-w-0 flex flex-col gap-8 self-start lg:border-l lg:border-slate-200 lg:pl-6">
+      <div className="border-b border-slate-200 pb-6">
         <h3 className="font-display text-base font-bold text-slate-900">Categories</h3>
         <ul className="mt-3 flex flex-col gap-1">
           <li>
             <Link
               href="/blog"
-              className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition ${
+              aria-current={!activeCategory ? "page" : undefined}
+              className={`flex min-h-11 items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition ${
                 activeCategory ? "text-slate-700 hover:bg-slate-50" : "bg-teal-50 text-teal-800"
               }`}
             >
@@ -155,7 +158,8 @@ export function BlogSidebar({ activeCategory }: { activeCategory?: string }) {
             <li key={c.slug}>
               <Link
                 href={`/blog/category/${c.slug}`}
-                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition ${
+                aria-current={activeCategory === c.slug ? "page" : undefined}
+                className={`flex min-h-11 items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition ${
                   activeCategory === c.slug ? "bg-teal-50 text-teal-800" : "text-slate-700 hover:bg-slate-50"
                 }`}
               >
@@ -179,7 +183,7 @@ export function BlogSidebar({ activeCategory }: { activeCategory?: string }) {
         </div>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-2xs">
+      <div className="border-t border-slate-200 pt-6">
         <h3 className="font-display text-base font-bold text-slate-900">Popular Articles</h3>
         <ol className="mt-3 flex flex-col gap-3">
           {popularPosts.map((p, i) => (
@@ -220,7 +224,7 @@ export function Pagination({
         <Link
           href={href(page - 1)}
           rel="prev"
-          className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          className="inline-flex min-h-11 items-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
         >
           ← Previous
         </Link>
@@ -232,7 +236,7 @@ export function Pagination({
           <Link
             href={href(n)}
             aria-current={n === page ? "page" : undefined}
-            className={`rounded-lg px-3.5 py-2 text-sm font-semibold transition ${
+            className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg px-3.5 py-2 text-sm font-semibold transition ${
               n === page
                 ? "bg-slate-900 text-white"
                 : "border border-slate-200 text-slate-700 hover:bg-slate-50"
@@ -247,7 +251,7 @@ export function Pagination({
         <Link
           href={href(page + 1)}
           rel="next"
-          className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          className="inline-flex min-h-11 items-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
         >
           Next →
         </Link>

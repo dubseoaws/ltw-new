@@ -24,13 +24,13 @@ const SERVICE =
 
 function StepDots({ step }: { step: number }) {
   return (
-    <ol className="flex items-center justify-center gap-2" aria-label="Booking progress">
+    <ol className="mx-auto grid max-w-md grid-cols-4 gap-2" aria-label="Booking progress">
       {bookingCopy.steps.map((label, i) => {
         const n = i + 1;
         const done = n < step;
         const active = n === step;
         return (
-          <li key={label} className="flex items-center gap-2">
+          <li key={label} className="flex flex-col items-center gap-2">
             <span
               aria-current={active ? "step" : undefined}
               className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition ${
@@ -41,12 +41,9 @@ function StepDots({ step }: { step: number }) {
                     : "bg-slate-100 text-slate-400 border border-slate-200"
               }`}
             >
-              <span className="sr-only">{label}</span>
               {done ? "✓" : n}
             </span>
-            {n < bookingCopy.steps.length ? (
-              <span className={`h-px w-4 sm:w-8 ${done ? "bg-emerald-700" : "bg-slate-200"}`} />
-            ) : null}
+            <span className={`text-xs font-semibold ${active || done ? "text-emerald-800" : "text-slate-500"}`}>{label}</span>
           </li>
         );
       })}
@@ -60,9 +57,9 @@ function StepHeader({ step, title, children }: { step: number; title: string; ch
       <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">
         Step {step} of {bookingCopy.steps.length}
       </p>
-      <h2 className="mt-1.5 font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+      <h1 className="mt-1.5 font-display text-2xl font-bold tracking-normal text-slate-900 sm:text-3xl">
         {title}
-      </h2>
+      </h1>
       {children ? <p className="mt-1.5 text-sm text-slate-600">{children}</p> : null}
     </div>
   );
@@ -199,13 +196,13 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
         <button
           type="button"
           onClick={() => setStep((s) => s - 1)}
-          className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 transition hover:text-slate-900"
+          className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-slate-600 transition hover:text-slate-900"
         >
           ← Back
         </button>
       ) : null}
 
-      <div className="mt-5 rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
+      <div className="mt-8 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-8">
         {/* ----------------------------------------------------- 1 clinic */}
         {step === 1 ? (
           <>
@@ -232,10 +229,10 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
                     </span>
                     <span className="mt-1 text-base font-bold text-slate-900">{c.name}</span>
                     <span className="mt-2 text-xs leading-relaxed text-slate-600">📍 {c.address}</span>
-                    <span className="mt-1 text-xs leading-relaxed text-slate-600">
+                    <span className="mb-4 mt-1 text-xs leading-relaxed text-slate-600">
                       🚇 {c.transport}
                     </span>
-                    <span className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
+                    <span className="mt-auto flex w-full flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3">
                       <span className="text-xs text-slate-500">
                         <span className="block font-semibold text-slate-400">Next available</span>
                         {next.weekday} {next.day} {next.month}
@@ -316,7 +313,7 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
                     setTime(t);
                     setStep(4);
                   }}
-                  className="rounded-lg border border-slate-200 bg-white py-2.5 text-sm font-bold text-slate-800 transition hover:border-emerald-600 hover:bg-emerald-50/40"
+                  className="min-h-12 rounded-lg border border-slate-200 bg-white py-2.5 text-sm font-bold text-slate-800 transition hover:border-emerald-600 hover:bg-emerald-50/40"
                 >
                   {t}
                 </button>
@@ -447,7 +444,7 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
                     {["Male", "Female"].map((g) => (
                       <label
                         key={g}
-                        className={`flex cursor-pointer items-center justify-center gap-2 rounded-md border px-3 py-2.5 text-sm font-semibold transition ${
+                        className={`flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-md border px-3 py-2.5 text-sm font-semibold transition focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-emerald-700 ${
                           form.gender === g
                             ? "border-emerald-600 bg-emerald-50 text-emerald-800"
                             : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
@@ -539,7 +536,7 @@ export default function BookingFlow({ initialClinicId }: { initialClinicId?: str
 }
 
 const inputClass =
-  "w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/20";
+  "min-h-12 min-w-0 w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/20";
 
 function Field({
   label,

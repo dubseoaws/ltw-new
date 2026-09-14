@@ -102,9 +102,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
       <Section className="bg-white">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <article>
+          <article className="min-w-0">
             <div
-              className="post-body max-w-none"
+              className="post-body max-w-[70ch]"
               dangerouslySetInnerHTML={{ __html: post.body }}
             />
 
@@ -126,7 +126,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               ) : null}
             </div>
 
-            <div className="mt-10 rounded-2xl border border-slate-200 bg-slate-900 p-8 text-center">
+            <div className="mt-10 border-y border-slate-200 bg-slate-900 px-5 py-8 text-center sm:px-8">
               <h2 className="font-display text-2xl font-bold tracking-tight text-white">
                 {postCta.title}
               </h2>

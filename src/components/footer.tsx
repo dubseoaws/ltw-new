@@ -41,7 +41,7 @@ export default function Footer() {
   return (
     <footer className="bg-slate-900 text-white relative border-t border-slate-800">
       <div className="container-x border-b border-slate-800 py-10 lg:py-12">
-        <div className="grid gap-8 rounded-xl border border-slate-800 bg-slate-800/40 p-6 lg:grid-cols-2 lg:p-8">
+        <div className="grid gap-10 lg:grid-cols-2">
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
@@ -93,7 +93,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="container-x grid gap-8 py-10 lg:py-12 lg:grid-cols-[1.2fr_repeat(4,1fr)]">
+      <div className="container-x grid gap-x-8 gap-y-10 py-10 lg:py-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[1.2fr_repeat(4,1fr)]">
         <div>
           <Logo variant="light" />
           <p className="mt-4 max-w-xs text-xs sm:text-sm leading-relaxed text-slate-400">{site.footerIntro}</p>

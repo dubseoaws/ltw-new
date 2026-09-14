@@ -9,10 +9,10 @@ export function Eyebrow({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider ${
+      className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-normal ${
         tone === "light"
-          ? "bg-slate-800 text-slate-200 border border-slate-700"
-          : "bg-teal-50 text-teal-800 border border-teal-200/80 shadow-2xs"
+          ? "text-slate-300"
+          : "text-teal-800"
       }`}
     >
       <span className="h-1.5 w-1.5 rounded-full bg-teal-600" />
@@ -44,7 +44,7 @@ export function SectionHeading({
     >
       {eyebrow ? <Eyebrow tone={tone}>{eyebrow}</Eyebrow> : null}
       <h2
-        className={`font-display text-2xl sm:text-3xl lg:text-[2.25rem] font-bold tracking-tight leading-tight ${
+        className={`font-display text-2xl sm:text-3xl lg:text-[2.25rem] font-bold tracking-normal leading-tight ${
           tone === "light" ? "text-white" : "text-slate-900"
         }`}
       >
@@ -74,7 +74,7 @@ export function Section({
   id?: string;
 }) {
   return (
-    <section id={id} className={`py-12 lg:py-16 relative ${className}`}>
+    <section id={id} className={`py-12 lg:py-20 relative ${className}`}>
       <div className="container-x relative">{children}</div>
     </section>
   );
@@ -115,7 +115,7 @@ export function TickList({
             <Check className="h-3 w-3" />
           </span>
           <span
-            className={`text-sm leading-snug ${
+            className={`text-sm leading-relaxed ${
               tone === "light" ? "text-slate-200" : "text-slate-700"
             }`}
           >

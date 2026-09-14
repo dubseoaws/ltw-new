@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Accordion from "@/components/accordion";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import Button from "@/components/button";
+import ClinicMap from "@/components/clinic-map";
 import { CtaBand, GoogleReviews, HoursCard, PageHero } from "@/components/blocks";
 import { Section, SectionHeading } from "@/components/ui";
 import { clinics, faqPage, home, homeResults, site } from "@/lib/site";
@@ -66,11 +67,11 @@ export default function FaqsPage() {
           title={faqPage.transformationsHeading}
           sub={faqPage.transformationsSub}
         />
-        <div className="mt-8 grid gap-6 sm:grid-cols-2">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {homeResults.map((r) => (
             <figure key={r.before}>
-              <BeforeAfterSlider {...r} />
-              <figcaption className="mt-3 flex items-center justify-between px-1">
+              <BeforeAfterSlider {...r} compact sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" />
+              <figcaption className="mt-3 flex flex-wrap items-start justify-between gap-2 px-1">
                 <span className="text-sm font-bold text-slate-900">{r.title}</span>
                 <span className="rounded-md bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 border border-slate-200">
                   {r.meta}
@@ -95,8 +96,9 @@ export default function FaqsPage() {
           title={faqPage.locationHeading}
           sub={faqPage.locationSub}
         />
-        <div className="mt-8">
+        <div className="mt-8 grid items-stretch gap-6 lg:grid-cols-2">
           <HoursCard heading={`${sk.label} Opening Hours`} hours={sk.hours} note={sk.hoursNote} />
+          <ClinicMap clinic={sk} aspect="aspect-16/9" />
         </div>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Button href={sk.mapUrl} tone="outline" size="md">

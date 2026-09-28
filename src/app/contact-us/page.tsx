@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CtaBand, GoogleReviews, HoursCard, PageHero, SmileGalleryStrip } from "@/components/blocks";
+import { CtaBand, HoursCard, PageHero, PageTrustSections } from "@/components/blocks";
 import Button from "@/components/button";
 import ClinicMap, { type ClinicMapClinic } from "@/components/clinic-map";
 import { Eyebrow, Section, TickList } from "@/components/ui";
@@ -118,7 +118,7 @@ export default function ContactPage() {
         titleBottom={contactPage.h1Bottom}
         lead={contactPage.lead}
       >
-        <div className="grid">
+        <div className="grid rounded-[1.15rem] bg-white px-7 py-3 shadow-xl shadow-black/20">
           <ContactCard title={contactPage.cards[0].title} sub={contactPage.cards[0].sub}>
             <a href={site.phoneHref} className="inline-flex min-h-11 items-center hover:underline">
               {site.phone}
@@ -171,9 +171,7 @@ export default function ContactPage() {
         </div>
       </Section>
 
-      <SmileGalleryStrip className="bg-white border-y border-slate-200" />
-
-      <GoogleReviews className="bg-white" />
+      <PageTrustSections skip={["locations"]} />
 
       <CtaBand
         heading={contactPage.ctaHeading}

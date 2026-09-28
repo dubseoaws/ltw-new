@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BlogCard, BlogHeroBanner, BlogSidebar, Pagination } from "@/components/blog";
-import { FaqSection, GoogleReviews, PageHero, SmileGalleryStrip } from "@/components/blocks";
+import { PageHero, PageTrustSections } from "@/components/blocks";
 import { Section, SectionHeading } from "@/components/ui";
 import { categories, getCategory, getPostsByCategory, POSTS_PER_PAGE } from "@/lib/blog";
 
@@ -67,11 +67,7 @@ export default async function BlogCategoryPage({
         </div>
       </Section>
 
-      <SmileGalleryStrip />
-
-      <GoogleReviews className="bg-white" />
-
-      <FaqSection className="bg-slate-50 border-y border-slate-200" />
+      <PageTrustSections />
     </>
   );
 }

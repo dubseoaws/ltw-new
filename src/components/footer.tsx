@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import Logo from "./logo";
+import { CqcIcon, GdcIcon } from "./reg-icons";
 import {
   clinics,
   footerCityHours,
@@ -13,6 +15,78 @@ import {
   site,
 } from "@/lib/site";
 
+
+function NewsletterForm() {
+  const [email, setEmail] = useState("");
+  const [website, setWebsite] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
+  const [error, setError] = useState("");
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (status === "sending") return;
+    setStatus("sending");
+    setError("");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, website }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+      setStatus("done");
+      setEmail("");
+    } catch (err) {
+      setStatus("idle");
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    }
+  }
+
+  return (
+    <form className="mt-4 flex flex-col gap-2 sm:flex-row" onSubmit={submit} noValidate>
+      <label htmlFor="footer-email" className="sr-only">
+        Email address
+      </label>
+      <input
+        id="footer-email"
+        type="email"
+        name="email"
+        required
+        autoComplete="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email address..."
+        className="w-full rounded-md border border-slate-700 bg-slate-800 px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none"
+      />
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={website}
+        onChange={(e) => setWebsite(e.target.value)}
+        className="hidden"
+      />
+      <button
+        type="submit"
+        disabled={status === "sending"}
+        className="shrink-0 rounded-md bg-emerald-700 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-emerald-600 disabled:opacity-60"
+      >
+        {status === "sending" ? "Sending…" : newsletter.cta}
+      </button>
+      <p aria-live="polite" className="sr-only">
+        {status === "done" ? "Thanks — you're on the list." : error}
+      </p>
+      {status === "done" ? (
+        <span className="text-xs text-emerald-400 sm:self-center">Thanks — you&rsquo;re on the list.</span>
+      ) : error ? (
+        <span className="text-xs text-red-400 sm:self-center">{error}</span>
+      ) : null}
+    </form>
+  );
+}
 
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   const external = href.startsWith("http");
@@ -55,8 +129,13 @@ export default function Footer() {
                   href={l.href}
                   rel="noopener nofollow"
                   target="_blank"
-                  className="rounded-md border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 hover:border-slate-600"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 hover:border-slate-600"
                 >
+                  {l.href.includes("cqc") ? (
+                    <CqcIcon className="h-4 w-4 text-emerald-400" />
+                  ) : (
+                    <GdcIcon className="h-4 w-4 text-emerald-400" />
+                  )}
                   {l.label}
                 </a>
               ))}
@@ -69,26 +148,7 @@ export default function Footer() {
             </p>
             <h3 className="mt-2 text-lg sm:text-xl font-bold">{newsletter.heading}</h3>
             <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-300">{newsletter.body}</p>
-            <form className="mt-4 flex flex-col gap-2 sm:flex-row" onSubmit={(e) => e.preventDefault()}>
-              <label htmlFor="footer-email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="footer-email"
-                type="email"
-                name="email"
-                required
-                autoComplete="email"
-                placeholder="Enter your email address..."
-                className="w-full rounded-md border border-slate-700 bg-slate-800 px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="shrink-0 rounded-md bg-emerald-700 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-emerald-600"
-              >
-                {newsletter.cta}
-              </button>
-            </form>
+            <NewsletterForm />
           </div>
         </div>
       </div>
@@ -197,7 +257,10 @@ export default function Footer() {
         <div className="container-x flex flex-col gap-4 py-6 text-xs text-slate-400 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-1.5">
             <p className="font-medium text-slate-300">{site.copyright}</p>
-            <p className="max-w-3xl leading-relaxed text-slate-500">{site.cqcLine}</p>
+            <p className="flex max-w-3xl items-start gap-2 leading-relaxed text-slate-500">
+              <CqcIcon className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+              <span>{site.cqcLine}</span>
+            </p>
             <p className="max-w-3xl leading-relaxed text-slate-500">{site.resultsDisclaimer}</p>
           </div>
           <div className="flex flex-wrap items-center gap-3 shrink-0">

@@ -3,8 +3,9 @@ import Link from "next/link";
 import Accordion from "@/components/accordion";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import Button from "@/components/button";
-import { CtaBand, FeatureGrid, GoogleReviews, TeamStrip } from "@/components/blocks";
-import { Check, Eyebrow, Section, SectionHeading, TickList } from "@/components/ui";
+import { GdcIcon } from "@/components/reg-icons";
+import { CtaBand, FeatureGrid, GoogleReviews, LocationsSection, TeamStrip } from "@/components/blocks";
+import { Check, Section, SectionHeading, TickList } from "@/components/ui";
 import {
   blogPosts,
   bookUrl,
@@ -42,26 +43,42 @@ export default function HomePage() {
       />
 
       {/* ------------------------------------------------------------ HERO */}
-      <section className="gradient-hero border-b border-slate-200/80 relative py-12 lg:py-16">
-        <div className="container-x relative grid items-center gap-10 lg:gap-12 lg:grid-cols-[1fr_1.15fr]">
+      <section className="hero-surface relative isolate overflow-hidden border-b border-slate-200/70 py-14 lg:py-20">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute inset-0 hero-grid" />
+          <div className="absolute -right-32 -top-40 h-[34rem] w-[34rem] rounded-full bg-emerald-200/30 blur-3xl" />
+          <div className="absolute -bottom-48 -left-40 h-[30rem] w-[30rem] rounded-full bg-teal-100/50 blur-3xl" />
+        </div>
+        <div className="container-x relative grid items-center gap-12 lg:gap-14 lg:grid-cols-[1fr_1.15fr]">
           <div>
-            <Eyebrow>{home.eyebrow}</Eyebrow>
+            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200/80 bg-white/80 px-3.5 py-1.5 text-[0.7rem] font-bold uppercase tracking-wider text-emerald-800 shadow-2xs backdrop-blur">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-600" />
+              </span>
+              {home.eyebrow}
+            </span>
 
-            <h1 className="mt-5 font-display text-3xl leading-[1.18] font-bold tracking-normal text-slate-900 sm:text-4xl lg:text-[3rem]">
+            <h1 className="mt-6 font-display text-[2.1rem] leading-[1.1] font-bold tracking-normal text-slate-900 sm:text-[2.6rem] lg:text-[3.15rem]">
               <span className="block">{home.h1a}</span>
-              <span className="block text-emerald-800">{home.h1b}</span>
+              <span className="hero-title-accent block">{home.h1b}</span>
             </h1>
 
-            <p className="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-600 font-normal">
+            <p className="mt-5 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-600 font-normal">
               {home.heroLead}
             </p>
             <p className="mt-2 text-xs text-slate-500 font-medium">✦ {home.heroLeadNote}</p>
 
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Button href={bookUrl} tone="emerald" size="md">
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <Button
+                href={bookUrl}
+                tone="emerald"
+                size="lg"
+                className="shadow-lg shadow-emerald-900/15 hover:shadow-xl hover:shadow-emerald-900/20"
+              >
                 Book Consultation
               </Button>
-              <Button href={site.phoneHref} tone="outline" size="md">
+              <Button href={site.phoneHref} tone="outline" size="lg" className="backdrop-blur">
                 {site.phone}
               </Button>
             </div>
@@ -70,7 +87,7 @@ export default function HomePage() {
             <div className="mt-6 flex flex-wrap gap-2.5">
               <Link
                 href="/south-kensington"
-                className="group flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white px-3.5 py-2 shadow-2xs transition hover:border-slate-300 hover:shadow-xs"
+                className="group flex items-center gap-2.5 rounded-xl border border-white/70 bg-white/80 px-4 py-2.5 shadow-2xs ring-1 ring-slate-900/5 backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md"
               >
                 <span className="h-2 w-2 rounded-full bg-emerald-600" />
                 <span className="text-xs">
@@ -80,7 +97,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/city-of-london"
-                className="group flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white px-3.5 py-2 shadow-2xs transition hover:border-slate-300 hover:shadow-xs"
+                className="group flex items-center gap-2.5 rounded-xl border border-white/70 bg-white/80 px-4 py-2.5 shadow-2xs ring-1 ring-slate-900/5 backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md"
               >
                 <span className="h-2 w-2 rounded-full bg-emerald-600" />
                 <span className="text-xs">
@@ -91,7 +108,7 @@ export default function HomePage() {
             </div>
 
             {/* Hero Stats */}
-            <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-slate-200/80 pt-6 sm:grid-cols-4">
+            <dl className="mt-9 grid grid-cols-2 gap-x-6 gap-y-6 rounded-2xl border border-white/70 bg-white/70 p-6 shadow-lg shadow-slate-900/5 ring-1 ring-slate-900/5 backdrop-blur sm:grid-cols-4">
               {heroStats.map((s, i) => (
                 <div key={s.label} className={i > 0 ? "sm:border-l sm:border-slate-200/80 sm:pl-5" : ""}>
                   <dt className="font-display text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">{s.value}</dt>
@@ -105,8 +122,12 @@ export default function HomePage() {
 
           {/* Big Hero Visual Showcase (Big Image + Before/After Slider + Price Badge) */}
           <div className="relative space-y-4">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-tr from-emerald-200/45 via-white/0 to-teal-200/45 blur-2xl"
+            />
             {/* BIG HERO CLINIC IMAGE */}
-            <div className="relative aspect-16/9 sm:aspect-21/10 overflow-hidden rounded-2xl border border-slate-200 shadow-lg bg-white">
+            <div className="relative aspect-16/9 sm:aspect-21/10 overflow-hidden rounded-2xl border border-white/60 shadow-2xl shadow-slate-900/10 ring-1 ring-slate-900/5 bg-white">
               <Image
                 src={img.clinicAbout}
                 alt="Teeth Whitening London flagship clinic in South Kensington"
@@ -123,7 +144,8 @@ export default function HomePage() {
                   </span>
                   <p className="mt-1 text-sm sm:text-base font-bold text-white">South Kensington &amp; St Paul&apos;s Clinics</p>
                 </div>
-                <span className="hidden sm:inline-flex rounded-lg bg-white/20 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-md border border-white/30">
+                <span className="hidden sm:inline-flex items-center gap-1.5 rounded-lg bg-white/20 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-md border border-white/30">
+                  <GdcIcon className="h-3.5 w-3.5" />
                   GDC Registered
                 </span>
               </div>
@@ -131,7 +153,7 @@ export default function HomePage() {
 
             {/* Hero Video Showcase (Replaces Before/After Image) */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 items-stretch">
-              <div className="relative aspect-16/9 overflow-hidden rounded-xl border border-slate-200/90 shadow-md bg-slate-950">
+              <div className="relative aspect-16/9 overflow-hidden rounded-xl border border-white/60 shadow-lg shadow-slate-900/10 ring-1 ring-slate-900/5 bg-slate-950">
                 <iframe
                   src="https://www.youtube.com/embed/BIUdsbvWGrY?autoplay=1&mute=1&loop=1&playlist=BIUdsbvWGrY&controls=1&rel=0"
                   title="Teeth Whitening London — Treatment Demonstration Video"
@@ -142,7 +164,7 @@ export default function HomePage() {
               </div>
 
               {/* Price Box */}
-              <div className="flex flex-col justify-between rounded-xl bg-white p-4 shadow-md border border-slate-200/90">
+              <div className="flex flex-col justify-between rounded-xl bg-white/90 p-4 shadow-lg shadow-slate-900/5 ring-1 ring-slate-900/5 border border-white/70 backdrop-blur">
                 <div>
                   <p className="text-[0.7rem] font-bold uppercase tracking-wider text-emerald-800">
                     ★ {home.packageLabel}
@@ -437,6 +459,8 @@ export default function HomePage() {
       </Section>
 
       <GoogleReviews className="bg-white border-t border-slate-200" />
+
+      <LocationsSection className="bg-slate-50 border-t border-slate-200" />
     </>
   );
 }

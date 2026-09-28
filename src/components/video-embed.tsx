@@ -10,17 +10,19 @@ export default function VideoEmbed({
   poster,
   posterAlt,
   sizes = "(max-width: 768px) 100vw, 42rem",
+  showCaption = true,
 }: {
   id: string;
   title: string;
   poster: string;
   posterAlt: string;
   sizes?: string;
+  showCaption?: boolean;
 }) {
   const [playing, setPlaying] = useState(false);
 
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/15 bg-slate-900 shadow-2xl shadow-black/40 ring-1 ring-white/10">
+    <div className="relative aspect-video w-full overflow-hidden rounded-[1.15rem] bg-slate-900">
       {playing ? (
         <iframe
           className="absolute inset-0 h-full w-full"
@@ -53,14 +55,16 @@ export default function VideoEmbed({
               </svg>
             </span>
           </span>
-          <span className="absolute inset-x-0 bottom-0 p-5 text-left sm:p-6">
-            <span className="block font-display text-base font-bold leading-snug text-white sm:text-lg">
-              {title}
+          {showCaption ? (
+            <span className="absolute inset-x-0 bottom-0 p-5 text-left sm:p-6">
+              <span className="block font-display text-base font-bold leading-snug text-white sm:text-lg">
+                {title}
+              </span>
+              <span className="mt-1 block text-xs font-semibold uppercase tracking-wider text-emerald-300">
+                Watch the video
+              </span>
             </span>
-            <span className="mt-1 block text-xs font-semibold uppercase tracking-wider text-emerald-300">
-              Watch the video
-            </span>
-          </span>
+          ) : null}
         </button>
       )}
     </div>

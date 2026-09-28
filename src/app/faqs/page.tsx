@@ -3,9 +3,9 @@ import Accordion from "@/components/accordion";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import Button from "@/components/button";
 import ClinicMap from "@/components/clinic-map";
-import { CtaBand, GoogleReviews, HoursCard, PageHero } from "@/components/blocks";
+import { CtaBand, GoogleReviews, HoursCard, PageHero, TeamStrip } from "@/components/blocks";
 import { Section, SectionHeading } from "@/components/ui";
-import { clinics, faqPage, home, homeResults, site } from "@/lib/site";
+import { clinics, faqPage, home, homeResults, homeTeam, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Frequently Asked Questions",
@@ -36,7 +36,7 @@ export default function FaqsPage() {
         titleBottom={faqPage.h1b}
         lead={faqPage.lead}
       >
-        <div className="rounded-lg bg-white p-6 border border-slate-200 shadow-2xs">
+        <div className="rounded-[1.15rem] bg-white p-7 shadow-xl shadow-black/20">
           <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
             {home.packageLabel}
           </p>
@@ -113,7 +113,14 @@ export default function FaqsPage() {
         </div>
       </Section>
 
-      <GoogleReviews className="bg-slate-50 border-y border-slate-200" />
+      <TeamStrip
+        members={homeTeam}
+        heading={home.teamHeading}
+        eyebrow="Our clinicians"
+        className="bg-slate-50 border-y border-slate-200"
+      />
+
+      <GoogleReviews className="bg-white" />
 
       <CtaBand
         heading="Still Have Questions?"

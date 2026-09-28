@@ -115,6 +115,53 @@
     background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
   }
 
+  .hero-surface {
+    background:
+      radial-gradient(1100px 460px at 88% -12%, rgba(16, 185, 129, 0.12), transparent 62%),
+      radial-gradient(820px 380px at -5% 4%, rgba(13, 148, 136, 0.09), transparent 58%),
+      linear-gradient(180deg, #f6faf9 0%, #ffffff 72%);
+  }
+
+  /* Faint architectural grid, faded out towards the content edges. */
+  .hero-grid {
+    background-image:
+      linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 35%, transparent 100%);
+    mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 35%, transparent 100%);
+  }
+
+  .hero-title-accent {
+    background: linear-gradient(100deg, #047857 0%, #0d9488 45%, #065f46 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero-dark {
+    background:
+      radial-gradient(900px 420px at 82% -8%, rgba(16, 185, 129, 0.22), transparent 60%),
+      radial-gradient(760px 420px at 4% 108%, rgba(13, 148, 136, 0.18), transparent 62%),
+      linear-gradient(160deg, #0b1220 0%, #0f172a 48%, #071b17 100%);
+  }
+
+  .hero-grid-dark {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 72px 72px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 0%, #000 20%, transparent 100%);
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 0%, #000 20%, transparent 100%);
+  }
+
+  .hero-title-light {
+    background: linear-gradient(100deg, #6ee7b7 0%, #5eead4 48%, #a7f3d0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .slick-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
@@ -127,6 +174,57 @@
     border-color: #cbd5e1;
     box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.08);
     transform: translateY(-2px);
+  }
+
+  @keyframes nav-pop {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes nav-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes nav-slide {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-nav-pop {
+    animation: nav-pop 0.18s ease-out;
+  }
+
+  .animate-nav-fade {
+    animation: nav-fade 0.2s ease-out;
+  }
+
+  .animate-nav-slide {
+    animation: nav-slide 0.22s ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-nav-pop,
+    .animate-nav-fade,
+    .animate-nav-slide {
+      animation: none;
+    }
   }
 }
 

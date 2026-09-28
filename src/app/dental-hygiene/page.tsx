@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
 import {
   CtaBand,
-  FaqSection,
   FeatureGrid,
-  GoogleReviews,
-  HoursCard,
   PageHero,
-  SmileGalleryStrip,
+  PageTrustSections,
 } from "@/components/blocks";
 import Button from "@/components/button";
-import ClinicMap from "@/components/clinic-map";
 import VideoEmbed from "@/components/video-embed";
 import { Check, Section, SectionHeading, TickList } from "@/components/ui";
 import { dentalHygienePage as page } from "@/lib/pages";
-import { bookUrl, clinics, img } from "@/lib/site";
+import { bookUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Dental Hygienist South Kensington",
@@ -60,8 +56,6 @@ function PriceCard({ p }: { p: (typeof page.prices)[number] }) {
 }
 
 export default function DentalHygienePage() {
-  const sk = clinics.southKensington;
-
   return (
     <>
       <PageHero eyebrow={page.eyebrow} titleBottom={page.h1} lead={page.lead}>
@@ -69,8 +63,8 @@ export default function DentalHygienePage() {
           <VideoEmbed
             id="4g8bEJmkiW4"
             title={page.h1}
-            poster={img.skTreatmentRoom}
-            posterAlt="Dental hygiene treatment room at South Kensington Medical Dental"
+            poster="https://i.ytimg.com/vi/4g8bEJmkiW4/maxresdefault.jpg"
+            posterAlt={`${page.h1} — video`}
           />
         </div>
       </PageHero>
@@ -144,23 +138,11 @@ export default function DentalHygienePage() {
         </div>
       </Section>
 
-      <SmileGalleryStrip className="bg-white border-y border-slate-200" />
-
-      <GoogleReviews className="bg-white" />
-
-      <FaqSection items={page.faqs} heading={page.faqHeading} sub="" showLink={false} />
-
-      <Section className="border-t border-slate-200 bg-slate-50">
-        <SectionHeading
-          eyebrow={page.locationEyebrow}
-          title={page.locationHeading}
-          sub={page.locationAddress}
-        />
-        <div className="mt-8 grid items-stretch gap-6 lg:grid-cols-2">
-          <HoursCard heading="Opening Hours" hours={sk.hours} note={sk.hoursNote} />
-          <ClinicMap clinic={sk} aspect="aspect-16/9" />
-        </div>
-      </Section>
+      <PageTrustSections
+        faqs={page.faqs}
+        faqHeading={page.faqHeading}
+        showFaqLink={false}
+      />
 
       <CtaBand heading={page.ctaHeading} sub={page.ctaSub} primaryLabel="Book Now" />
     </>

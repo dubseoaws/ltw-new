@@ -2,15 +2,19 @@ import Image from "next/image";
 import Accordion from "./accordion";
 import BeforeAfterSlider from "./before-after-slider";
 import Button from "./button";
+import ClinicMap from "./clinic-map";
 import GoogleReviewsCarousel from "./google-reviews-carousel";
-import { Check, Eyebrow, Section, SectionHeading, TickList } from "./ui";
+import { CqcIcon, GdcIcon } from "./reg-icons";
+import { Check, Section, SectionHeading, TickList } from "./ui";
 import { googleRating, googleReviews } from "@/lib/reviews";
 import {
   bookUrl,
   clinics,
   faqPage,
   heroStats,
+  home,
   homeResults,
+  homeTeam,
   reviewsBlock,
   site,
 } from "@/lib/site";
@@ -35,60 +39,116 @@ export function PageHero({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="gradient-hero border-b border-slate-200/80 relative py-12 lg:py-20">
-      <div className="container-x relative">
-        <div className={children ? "grid items-center gap-10 lg:gap-14 lg:grid-cols-2" : "mx-auto max-w-4xl text-center"}>
-          <div className="min-w-0">
-            <Eyebrow>{eyebrow}</Eyebrow>
+    <section className="hero-dark relative isolate overflow-hidden text-white">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 hero-grid-dark" />
+        <div className="absolute -top-44 right-[-10%] h-[36rem] w-[36rem] rounded-full bg-emerald-400/12 blur-[140px]" />
+        <div className="absolute -bottom-56 left-[-12%] h-[32rem] w-[32rem] rounded-full bg-teal-300/10 blur-[140px]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300/40 to-transparent" />
+      </div>
 
-            <h1 className="mt-5 font-display text-3xl leading-[1.18] font-bold tracking-normal text-slate-900 sm:text-4xl lg:text-[2.75rem]">
-              {titleTop ? <span className="block">{titleTop}</span> : null}
-              <span className="block text-emerald-800">{titleBottom}</span>
+      <div className="container-x relative pt-16 pb-14 lg:pt-20 lg:pb-16">
+        <div
+          className={
+            children
+              ? "grid items-center gap-12 lg:grid-cols-12 lg:gap-12"
+              : "mx-auto max-w-3xl text-center"
+          }
+        >
+          <div className={`min-w-0 ${children ? "lg:col-span-5" : "flex flex-col items-center"}`}>
+            <span className="inline-flex items-center gap-2.5 text-[0.7rem] font-bold uppercase tracking-[0.18em] text-emerald-300">
+              <span className="h-px w-8 bg-gradient-to-r from-emerald-400/20 to-emerald-300" />
+              {eyebrow}
+            </span>
+
+            <h1 className="mt-5 font-display text-[2rem] font-bold leading-[1.1] tracking-[-0.015em] text-white [hyphens:none] sm:text-[2.3rem] lg:text-[2.4rem] xl:text-[2.6rem]">
+              {titleTop ? <span className="block text-white/95">{titleTop}</span> : null}
+              <span className="hero-title-light block">{titleBottom}</span>
             </h1>
 
-            <p className={`mt-5 max-w-2xl text-base leading-7 text-slate-600 font-normal ${children ? "" : "mx-auto"}`}>{lead}</p>
+            <p
+              className={`mt-6 max-w-[46ch] text-[0.975rem] leading-[1.85] font-normal text-slate-300/90 lg:text-base ${
+                children ? "" : "mx-auto"
+              }`}
+            >
+              {lead}
+            </p>
 
             {badges?.length ? (
-              <ul className={`mt-6 flex flex-wrap gap-2 ${children ? "" : "justify-center"}`}>
+              <ul
+                className={`mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 ${
+                  children ? "" : "justify-center"
+                }`}
+              >
                 {badges.map((b) => (
-                  <li
-                    key={b}
-                    className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 shadow-2xs"
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
-                    {b}
+                  <li key={b} className="inline-flex items-center gap-2 text-[0.8rem] font-medium text-slate-300">
+                    {b.includes("CQC") ? (
+                      <CqcIcon className="h-4 w-4 text-emerald-300" />
+                    ) : b.includes("GDC") ? (
+                      <GdcIcon className="h-4 w-4 text-emerald-300" />
+                    ) : (
+                      <Check className="h-3.5 w-3.5 text-emerald-300" />
+                    )}
+                    {b.replace(/^\u2713\s*/, "")}
                   </li>
                 ))}
               </ul>
             ) : null}
 
-            <div className={`mt-7 flex flex-wrap items-center gap-3 ${children ? "" : "justify-center"}`}>
-              <Button href={bookUrl} tone="emerald" size="md">
+            <div className={`mt-9 flex flex-wrap items-center gap-3 ${children ? "" : "justify-center"}`}>
+              <Button
+                href={bookUrl}
+                tone="emerald"
+                size="lg"
+                className="shadow-xl shadow-emerald-950/40 hover:shadow-2xl"
+              >
                 Book Consultation
               </Button>
-              <Button href={site.phoneHref} tone="outline" size="md">
+              <Button
+                href={site.phoneHref}
+                tone="ghost"
+                size="lg"
+                className="border-white/20 backdrop-blur hover:border-white/40"
+              >
                 {site.phone}
               </Button>
             </div>
-
-            {stats?.length ? (
-              <dl className="mt-8 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-slate-200/80 pt-6 sm:grid-cols-4">
-                {stats.map((s, i) => (
-                  <div key={s.label} className={i > 0 ? "sm:border-l sm:border-slate-200/80 sm:pl-5" : ""}>
-                    <dt className="font-display text-lg font-bold text-slate-900 tracking-normal">
-                      {s.value}
-                    </dt>
-                    <dd className="mt-0.5 text-[0.68rem] font-bold uppercase tracking-wider text-slate-500">
-                      {s.label}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            ) : null}
           </div>
 
-          {children ? <div className="relative min-w-0 w-full">{children}</div> : null}
+          {children ? (
+            <div className="relative min-w-0 w-full lg:col-span-7">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-8 rounded-[3rem] bg-gradient-to-tr from-emerald-400/15 via-transparent to-teal-300/15 blur-3xl"
+              />
+              <div className="relative rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-2 shadow-2xl shadow-black/50 backdrop-blur">
+                {children}
+              </div>
+            </div>
+          ) : null}
         </div>
+
+        {stats?.length ? (
+          <dl
+            className={`mt-14 grid grid-cols-2 gap-y-8 border-t border-white/10 pt-8 ${
+              stats.length === 3 ? "sm:grid-cols-3" : stats.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-4"
+            }`}
+          >
+            {stats.map((s, i) => (
+              <div
+                key={s.label}
+                className={`px-1 ${i > 0 ? "sm:border-l sm:border-white/10 sm:pl-8" : ""}`}
+              >
+                <dt className="font-display text-[1.6rem] font-bold leading-none tracking-[-0.01em] text-white lg:text-[1.85rem]">
+                  {s.value}
+                </dt>
+                <dd className="mt-2.5 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-slate-400">
+                  {s.label}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        ) : null}
       </div>
     </section>
   );
@@ -159,6 +219,7 @@ export function TeamStrip({
   heading,
   sub,
   eyebrow,
+  className = "bg-slate-50/70 border-y border-slate-200/80",
 }: {
   members: readonly {
     name: string;
@@ -169,9 +230,10 @@ export function TeamStrip({
   heading: string;
   sub?: string;
   eyebrow?: string;
+  className?: string;
 }) {
   return (
-    <Section className="bg-slate-50/70 border-y border-slate-200/80">
+    <Section className={className} id="team">
       <SectionHeading eyebrow={eyebrow} title={heading} sub={sub} />
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {members.map((m) => (
@@ -204,7 +266,8 @@ export function TeamStrip({
             </div>
             <div className="p-4">
               <h3 className="text-base font-semibold text-slate-900">{m.name}</h3>
-              <p className="mt-1 inline-block text-xs font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+              <p className="mt-1 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                <GdcIcon className="h-3.5 w-3.5" />
                 {m.gdc}
               </p>
             </div>
@@ -444,9 +507,11 @@ export function GoogleReviews({ className = "bg-white" }: { className?: string }
             <Button href={bookUrl} tone="emerald" size="md">
               {reviewsBlock.ctaLabel}
             </Button>
-            <Button href={clinics.southKensington.mapUrl} tone="outline" size="md">
-              {reviewsBlock.linkLabel}
-            </Button>
+            {[clinics.southKensington, clinics.cityOfLondon].map((clinic) => (
+              <Button key={clinic.slug} href={clinic.mapUrl} tone="outline" size="md">
+                {clinic.label} — {reviewsBlock.linkLabel}
+              </Button>
+            ))}
           </div>
         </>
       )}
@@ -552,5 +617,154 @@ export function FaqSection({
     </Section>
   );
 }
+
+/* ------------------------------------------------------------- locations */
+
+export function LocationsSection({
+  className = "bg-white border-t border-slate-200",
+  eyebrow = "Locations",
+  heading = "Visit Our London Clinics",
+  sub = site.topBar,
+}: {
+  className?: string;
+  eyebrow?: string;
+  heading?: string;
+  sub?: string;
+}) {
+  const list = [clinics.southKensington, clinics.cityOfLondon];
+
+  const schema = list.map((clinic) => ({
+    "@context": "https://schema.org",
+    "@type": "Dentist",
+    name: `${site.name} — ${clinic.label}`,
+    url: `${site.url}/${clinic.slug}`,
+    telephone: site.phone,
+    email: site.email,
+    hasMap: clinic.mapUrl,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: clinic.lines[0],
+      addressLocality: clinic.lines[1],
+      addressRegion: "London",
+      postalCode: clinic.lines[2].split(" ").slice(-2).join(" "),
+      addressCountry: "GB",
+    },
+  }));
+
+  return (
+    <Section className={className} id="locations">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      <SectionHeading eyebrow={eyebrow} title={heading} sub={sub} />
+
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        {list.map((clinic) => (
+          <article key={clinic.slug} className="flex min-w-0 flex-col gap-4">
+            <ClinicMap clinic={clinic} aspect="aspect-16/10" showAddress={false} />
+            <div className="flex flex-1 flex-col rounded-lg border border-slate-200 bg-white p-5 shadow-2xs">
+              <h3 className="text-base font-bold text-slate-900">{clinic.label}</h3>
+              <address className="mt-1 text-sm leading-relaxed text-slate-600 not-italic">
+                {clinic.lines.join(", ")}
+              </address>
+              <p className="mt-1 text-xs font-semibold text-emerald-800">{clinic.note}</p>
+
+              <dl className="mt-4 divide-y divide-slate-100 border-t border-slate-100 pt-1">
+                {clinic.hours.map(([day, time]) => (
+                  <div key={day} className="flex items-center justify-between gap-2 py-1.5">
+                    <dt className="text-xs font-medium text-slate-700">{day}</dt>
+                    <dd
+                      className={`text-xs tabular-nums ${
+                        time === "Closed" ? "text-slate-400" : "font-semibold text-emerald-800"
+                      }`}
+                    >
+                      {time}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-3 text-xs leading-relaxed text-slate-500">{clinic.hoursNote}</p>
+
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                <Button href={`/${clinic.slug}`} tone="emerald" size="sm">
+                  {clinic.label} Clinic →
+                </Button>
+                <Button href={clinic.mapUrl} tone="outline" size="sm">
+                  Get Directions →
+                </Button>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-semibold">
+        <a href={site.phoneHref} className="text-slate-800 transition hover:text-emerald-700">
+          {site.phone}
+        </a>
+        <a href={`mailto:${site.email}`} className="text-slate-800 transition hover:text-emerald-700">
+          {site.email}
+        </a>
+      </div>
+    </Section>
+  );
+}
+
+/* ------------------------------------------- shared trust / SEO sections */
+
+export type TrustSection = "results" | "team" | "faqs" | "reviews" | "locations";
+
+/**
+ * Renders the sitewide proof → expertise → FAQ → reviews → local-SEO block in a
+ * consistent order. Pass `skip` for sections a page already renders itself.
+ */
+export function PageTrustSections({
+  skip = [],
+  faqs,
+  faqHeading,
+  faqSub,
+  showFaqLink,
+}: {
+  skip?: readonly TrustSection[];
+  faqs?: readonly { q: string; a: string }[];
+  faqHeading?: string;
+  faqSub?: string;
+  showFaqLink?: boolean;
+}) {
+  const show = (s: TrustSection) => !skip.includes(s);
+  let light = true;
+  const band = () => {
+    const cls = light ? "bg-white" : "bg-slate-50 border-y border-slate-200";
+    light = !light;
+    return cls;
+  };
+
+  return (
+    <>
+      {show("results") ? <SmileGalleryStrip className={band()} /> : null}
+      {show("team") ? (
+        <TeamStrip
+          members={homeTeam}
+          heading={home.teamHeading}
+          eyebrow="Our clinicians"
+          className={band()}
+        />
+      ) : null}
+      {show("faqs") ? (
+        <FaqSection
+          className={band()}
+          items={faqs}
+          heading={faqHeading}
+          sub={faqs ? (faqSub ?? "") : faqSub}
+          showLink={showFaqLink ?? !faqs}
+        />
+      ) : null}
+      {show("reviews") ? <GoogleReviews className={band()} /> : null}
+      {show("locations") ? <LocationsSection className={band()} /> : null}
+    </>
+  );
+}
+
 
 

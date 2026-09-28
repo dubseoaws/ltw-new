@@ -5,7 +5,7 @@ import {
   BlogSidebar,
   Pagination,
 } from "@/components/blog";
-import { FaqSection, GoogleReviews, PageHero, SmileGalleryStrip } from "@/components/blocks";
+import { PageHero, PageTrustSections } from "@/components/blocks";
 import { Section, SectionHeading } from "@/components/ui";
 import { blogHero, featuredPost, getPage, totalPages, allPosts } from "@/lib/blog";
 
@@ -49,11 +49,7 @@ export default function BlogListing({ page }: { page: number }) {
         </div>
       </Section>
 
-      <SmileGalleryStrip />
-
-      <GoogleReviews className="bg-white" />
-
-      <FaqSection className="bg-slate-50 border-y border-slate-200" />
+      <PageTrustSections />
     </>
   );
 }

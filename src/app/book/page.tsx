@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BookingFlow from "./booking-flow";
+import { PageTrustSections } from "@/components/blocks";
+import { CqcIcon } from "@/components/reg-icons";
 import { bookingCopy } from "@/lib/booking";
 import { site } from "@/lib/site";
 
@@ -20,7 +22,8 @@ export default async function BookPage({
   const initialClinicId = clinic === "stpauls" ? "city-of-london" : undefined;
 
   return (
-    <div className="bg-slate-50 py-8 lg:py-12">
+    <>
+      <div className="bg-slate-50 py-8 lg:py-12">
       <div className="container-x max-w-4xl">
         <div className="flex items-center justify-between gap-4">
           <Link
@@ -42,7 +45,8 @@ export default async function BookPage({
           <span className="font-bold text-slate-800">{bookingCopy.rating}</span>
           <span>{bookingCopy.reviews}</span>
           <span aria-hidden="true">·</span>
-          <span className="font-bold uppercase tracking-wider text-slate-700">
+          <span className="inline-flex items-center gap-1.5 font-bold uppercase tracking-wider text-slate-700">
+            <CqcIcon className="h-4 w-4 text-emerald-700" />
             {bookingCopy.regulated}
           </span>
         </p>
@@ -56,6 +60,9 @@ export default async function BookPage({
           <p className="mt-1">{bookingCopy.footerAddresses}</p>
         </div>
       </div>
-    </div>
+      </div>
+
+      <PageTrustSections />
+    </>
   );
 }

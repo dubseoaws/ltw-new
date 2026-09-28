@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Button from "@/components/button";
 import ClinicMap from "@/components/clinic-map";
+import { CqcIcon, GdcIcon } from "@/components/reg-icons";
 import {
   CtaBand,
-  FaqSection,
   FeatureGrid,
-  GoogleReviews,
   PageHero,
-  SmileGalleryStrip,
+  PageTrustSections,
 } from "@/components/blocks";
 import { Section, SectionHeading, TickList } from "@/components/ui";
 import { about, bookUrl, clinics, img, principal, site } from "@/lib/site";
@@ -30,7 +29,7 @@ export default function AboutPage() {
         lead={about.lead}
         stats={about.stats}
       >
-        <div className="relative aspect-4/3 overflow-hidden rounded-xl border border-slate-200 shadow-sm bg-white">
+        <div className="relative aspect-4/3 overflow-hidden rounded-[1.15rem] bg-slate-900">
           <Image
             src={img.clinicTeam}
             alt="Teeth Whitening London clinic interior in South Kensington"
@@ -62,9 +61,16 @@ export default function AboutPage() {
               {about.storyBadges.map((b) => (
                 <li
                   key={b}
-                  className="rounded-md border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700"
                 >
-                  ✓ {b}
+                  {b.includes("CQC") ? (
+                    <CqcIcon className="h-3.5 w-3.5 text-emerald-700" />
+                  ) : b.includes("GDC") ? (
+                    <GdcIcon className="h-3.5 w-3.5 text-emerald-700" />
+                  ) : (
+                    <span aria-hidden="true">✓</span>
+                  )}
+                  {b}
                 </li>
               ))}
             </ul>
@@ -109,7 +115,8 @@ export default function AboutPage() {
                 className="object-cover object-top"
               />
             </div>
-            <span className="absolute bottom-3 left-3 rounded-md bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white shadow-2xs">
+            <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-md bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white shadow-2xs">
+              <GdcIcon className="h-3.5 w-3.5 text-emerald-400" />
               GDC #195843
             </span>
           </div>
@@ -222,11 +229,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <GoogleReviews />
-
-      <SmileGalleryStrip />
-
-      <FaqSection />
+      <PageTrustSections skip={["locations"]} />
 
       <CtaBand heading={about.ctaHeading} sub={about.ctaSub} note={about.ctaNote} />
     </>

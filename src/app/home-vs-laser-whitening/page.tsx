@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
 import {
   CtaBand,
-  FaqSection,
-  GoogleReviews,
   PageHero,
+  PageTrustSections,
   PricePanel,
   ProcessSteps,
-  SmileGalleryStrip,
 } from "@/components/blocks";
 import { Check, Section, SectionHeading, TickList } from "@/components/ui";
 import { whiteningOptionsPage as page } from "@/lib/pages";
-import { bookUrl, heroBeforeAfter, img } from "@/lib/site";
+import { bookUrl, heroBeforeAfter } from "@/lib/site";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import VideoEmbed from "@/components/video-embed";
 
@@ -145,8 +143,9 @@ export default function WhiteningOptionsPage() {
           <VideoEmbed
             id="BIUdsbvWGrY"
             title={page.h1}
-            poster={img.clinicAbout}
-            posterAlt="Reception team welcoming a patient at South Kensington Medical Dental"
+            poster="https://i.ytimg.com/vi/BIUdsbvWGrY/maxresdefault.jpg"
+            posterAlt={`${page.h1} ${page.h1Sub} — video`}
+            showCaption={false}
           />
         </div>
       </PageHero>
@@ -235,11 +234,7 @@ export default function WhiteningOptionsPage() {
         </div>
       </Section>
 
-      <SmileGalleryStrip className="border-y border-slate-200 bg-white" />
-
-      <GoogleReviews className="bg-slate-50" />
-
-      <FaqSection items={page.faqs} heading={page.faqHeading} sub="" showLink={false} />
+      <PageTrustSections faqs={page.faqs} faqHeading={page.faqHeading} showFaqLink={false} />
 
       <CtaBand heading={page.ctaHeading} sub={page.ctaSub} primaryLabel="Book Now" />
     </>

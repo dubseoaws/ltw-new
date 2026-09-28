@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Button from "@/components/button";
 import { BlogSidebar, PostImage } from "@/components/blog";
-import { FaqSection, GoogleReviews, SmileGalleryStrip } from "@/components/blocks";
+import { PageTrustSections } from "@/components/blocks";
 import { Section } from "@/components/ui";
 import {
   allPosts,
@@ -70,11 +70,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
 
-      <section className="relative isolate overflow-hidden bg-slate-900 py-16 lg:py-24">
-        <div className="absolute inset-0 -z-10 opacity-35">
+      <section className="hero-dark relative isolate overflow-hidden py-16 lg:py-24">
+        <div className="absolute inset-0 -z-10 opacity-25">
           <PostImage post={meta} sizes="100vw" priority />
         </div>
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-slate-900/80 via-slate-900/85 to-slate-900" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-slate-950/85 via-slate-950/88 to-slate-950" />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 hero-grid-dark" />
 
         <div className="container-x">
           <Link href="/blog" className="text-sm font-semibold text-slate-300 hover:text-white">
@@ -178,11 +179,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       </Section>
 
-      <SmileGalleryStrip />
-
-      <GoogleReviews className="bg-white" />
-
-      <FaqSection className="bg-slate-50 border-y border-slate-200" />
+      <PageTrustSections />
     </>
   );
 }

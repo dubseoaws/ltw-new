@@ -11,11 +11,13 @@ export type ClinicMapClinic = {
 export default function ClinicMap({
   clinic,
   className = "",
+  frameClassName = "rounded-lg border border-slate-200 bg-white",
   aspect = "aspect-4/3",
   showAddress = true,
 }: {
   clinic: ClinicMapClinic;
   className?: string;
+  frameClassName?: string;
   aspect?: string;
   showAddress?: boolean;
 }) {
@@ -23,7 +25,7 @@ export default function ClinicMap({
 
   return (
     <div
-      className={`flex min-w-0 w-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white ${className}`}
+      className={`flex min-w-0 w-full flex-col overflow-hidden ${frameClassName} ${className}`}
     >
       <div className={`relative min-h-60 w-full flex-1 ${aspect}`}>
         <iframe

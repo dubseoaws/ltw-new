@@ -4,10 +4,9 @@ import Button from "@/components/button";
 import {
   CtaBand,
   FeatureGrid,
-  GoogleReviews,
   PageHero,
+  PageTrustSections,
   PricePanel,
-  SmileGalleryStrip,
 } from "@/components/blocks";
 import { Check, Section, SectionHeading } from "@/components/ui";
 import { bookUrl, pricing } from "@/lib/site";
@@ -43,7 +42,7 @@ export default function PricingPage() {
         badges={pricing.badges}
         stats={pricing.heroStats}
       >
-        <div className="rounded-lg bg-white p-6 border border-slate-200 shadow-2xs">
+        <div className="rounded-[1.15rem] bg-white p-7 shadow-xl shadow-black/20">
           <h2 className="text-lg font-bold text-slate-900">{pricing.quickSummaryHeading}</h2>
           <ul className="mt-4 space-y-2.5">
             {pricing.quickSummary.map((item) => (
@@ -255,9 +254,7 @@ export default function PricingPage() {
         </div>
       </Section>
 
-      <SmileGalleryStrip />
-
-      <GoogleReviews className="bg-white" />
+      <PageTrustSections skip={["faqs"]} />
 
       <CtaBand heading={pricing.ctaHeading} sub={pricing.ctaSub} note={pricing.ctaNote} />
     </>

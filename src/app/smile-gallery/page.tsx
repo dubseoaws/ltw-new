@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import BeforeAfterSlider from "@/components/before-after-slider";
-import { CtaBand, FaqSection, FeatureGrid, GoogleReviews, PageHero } from "@/components/blocks";
+import { CtaBand, FeatureGrid, PageHero, PageTrustSections } from "@/components/blocks";
 import { Section, SectionHeading, TickList } from "@/components/ui";
 import { gallery, galleryCases, galleryMore, heroBeforeAfter } from "@/lib/site";
 
@@ -22,7 +22,7 @@ export default function GalleryPage() {
           <BeforeAfterSlider
             {...heroBeforeAfter}
             priority
-            className="rounded-lg"
+            className="rounded-[1.15rem]"
             sizes="(max-width: 640px) 100vw, 440px"
           />
         </div>
@@ -203,9 +203,7 @@ export default function GalleryPage() {
         </div>
       </Section>
 
-      <GoogleReviews className="bg-white" />
-
-      <FaqSection className="bg-slate-50 border-y border-slate-200" />
+      <PageTrustSections skip={["results"]} />
 
       <CtaBand
         heading={gallery.ctaHeading}

@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import {
   CtaBand,
-  FaqSection,
   FeatureGrid,
-  GoogleReviews,
   PageHero,
-  SmileGalleryStrip,
+  PageTrustSections,
 } from "@/components/blocks";
 import Button from "@/components/button";
+import { GdcIcon } from "@/components/reg-icons";
 import { Section, SectionHeading } from "@/components/ui";
 import type { Dentist } from "@/lib/site";
 import { bookUrl, dentistsPage, img, principal, team } from "@/lib/site";
@@ -65,7 +64,8 @@ function DentistCard({ d }: { d: Dentist }) {
             className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
           />
         )}
-        <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-slate-800 shadow-2xs backdrop-blur">
+        <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-slate-800 shadow-2xs backdrop-blur">
+          <GdcIcon className="h-3.5 w-3.5 text-emerald-700" />
           GDC {d.gdc}
         </span>
       </div>
@@ -112,7 +112,7 @@ export default function DentistsPage() {
         lead={dentistsPage.lead}
         stats={dentistsPage.stats}
       >
-        <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-lg border border-slate-200 shadow-sm bg-white lg:max-w-md">
+        <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-[1.15rem] bg-slate-900 lg:max-w-md">
           <Image
             src={img.dentistsHero}
             alt="Teeth Whitening London dental team"
@@ -174,11 +174,7 @@ export default function DentistsPage() {
         <FeatureGrid items={dentistsPage.why} />
       </Section>
 
-      <GoogleReviews className="bg-white" />
-
-      <SmileGalleryStrip />
-
-      <FaqSection />
+      <PageTrustSections skip={["team"]} />
 
       <CtaBand heading={dentistsPage.ctaHeading} sub={dentistsPage.ctaSub} />
     </>

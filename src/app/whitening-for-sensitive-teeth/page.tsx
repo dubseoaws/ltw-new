@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import {
   CtaBand,
-  FaqSection,
   FeatureGrid,
-  GoogleReviews,
   PageHero,
-  SmileGalleryStrip,
+  PageTrustSections,
 } from "@/components/blocks";
 import Button from "@/components/button";
 import VideoEmbed from "@/components/video-embed";
@@ -75,6 +73,7 @@ export default function SensitiveTeethPage() {
             title={page.h1}
             poster={img.skTreatmentRoom}
             posterAlt="Treatment room at South Kensington Medical Dental"
+            showCaption={false}
           />
         </div>
       </PageHero>
@@ -138,11 +137,7 @@ export default function SensitiveTeethPage() {
         <ComparisonTable head={page.tableHead} rows={page.tableRows} />
       </Section>
 
-      <SmileGalleryStrip />
-
-      <GoogleReviews className="bg-white" />
-
-      <FaqSection items={page.faqs} heading={page.faqHeading} sub="" showLink={false} />
+      <PageTrustSections faqs={page.faqs} faqHeading={page.faqHeading} showFaqLink={false} />
 
       <CtaBand heading={page.ctaHeading} sub={page.ctaSub} primaryLabel="Book Now" />
     </>

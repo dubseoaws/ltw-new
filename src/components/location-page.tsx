@@ -8,6 +8,7 @@ import {
   CtaBand,
   GoogleReviews,
   HoursCard,
+  LocationsSection,
   PageHero,
   PricePanel,
   ProcessSteps,
@@ -123,9 +124,13 @@ export default function LocationPage({
         stats={c.stats}
       >
         {heroMap ? (
-          <ClinicMap clinic={clinic} showAddress={false} />
+          <ClinicMap
+            clinic={clinic}
+            showAddress={false}
+            frameClassName="rounded-[1.15rem] bg-slate-900"
+          />
         ) : (
-          <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border border-slate-200 shadow-sm bg-white">
+          <div className="relative aspect-4/3 w-full overflow-hidden rounded-[1.15rem] bg-slate-900">
             <Image
               src={c.insideImages[0].src}
               alt={c.insideImages[0].alt}
@@ -136,14 +141,14 @@ export default function LocationPage({
             />
           </div>
         )}
-        <div className="mt-4 rounded-lg bg-white p-4 shadow-2xs border border-slate-200">
-          <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">
+        <div className="mt-2 rounded-[1.15rem] border border-white/10 bg-white/[0.04] p-5 backdrop-blur">
+          <p className="text-xs font-bold uppercase tracking-wider text-emerald-300">
             {clinic.label}
           </p>
-          <address className="mt-1 text-sm font-semibold text-slate-800 not-italic">
+          <address className="mt-1.5 text-sm font-semibold not-italic text-white">
             {clinic.lines.join(", ")}
           </address>
-          <p className="mt-1 text-xs text-slate-500 font-normal">{clinic.note}</p>
+          <p className="mt-1 text-xs font-normal text-slate-400">{clinic.note}</p>
         </div>
       </PageHero>
 
@@ -343,6 +348,8 @@ export default function LocationPage({
           <Accordion items={c.faqs} />
         </div>
       </Section>
+
+      <LocationsSection className="bg-white border-t border-slate-200" />
 
       <CtaBand
         heading={c.ctaHeading}

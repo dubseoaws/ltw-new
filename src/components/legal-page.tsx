@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageTrustSections } from "@/components/blocks";
 import { Section } from "@/components/ui";
 import type { LegalBlock, LegalDoc } from "@/lib/legal";
 
@@ -38,12 +39,16 @@ function Block({ block }: { block: LegalBlock }) {
 export default function LegalPage({ doc }: { doc: LegalDoc }) {
   return (
     <>
-      <section className="gradient-hero border-b border-slate-200/80 py-12 lg:py-16">
-        <div className="container-x text-center">
-          <h1 className="font-display text-3xl font-bold tracking-normal text-slate-900 sm:text-4xl">
+      <section className="hero-dark relative isolate overflow-hidden py-16 lg:py-24 text-white">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <div className="absolute inset-0 hero-grid-dark" />
+          <div className="absolute -right-32 -top-40 h-[30rem] w-[30rem] rounded-full bg-emerald-400/12 blur-[130px]" />
+        </div>
+        <div className="container-x relative text-center">
+          <h1 className="font-display text-[2.15rem] font-bold leading-[1.1] tracking-normal text-white sm:text-[2.7rem]">
             {doc.h1}
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600">{doc.lead}</p>
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-slate-300">{doc.lead}</p>
         </div>
       </section>
 
@@ -72,6 +77,8 @@ export default function LegalPage({ doc }: { doc: LegalDoc }) {
           </div>
         </div>
       </Section>
+
+      <PageTrustSections />
     </>
   );
 }
